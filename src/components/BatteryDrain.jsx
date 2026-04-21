@@ -36,8 +36,14 @@ const BatteryDrain = () => {
       className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Sustentabilidade</h2>
-        <span className="text-sm text-zinc-300">{battery}%</span>
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+          <i className="fa-solid fa-leaf text-emerald-300" aria-hidden="true" />
+          Sustentabilidade
+        </h2>
+        <span className="flex items-center gap-1 text-sm text-zinc-300">
+          <i className="fa-solid fa-battery-three-quarters" aria-hidden="true" />
+          {battery}%
+        </span>
       </div>
 
       <div className="mt-4">

@@ -32,3 +32,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-zinc-500;
 }
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

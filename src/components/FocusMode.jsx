@@ -22,7 +22,10 @@ const FocusMode = ({ onToggle }) => {
       transition={spring}
       className="rounded-[2.5rem] border border-white/10 bg-white/5 p-5 backdrop-blur-xl"
     >
-      <h2 className="text-lg font-semibold text-white">Impacto Profissional</h2>
+      <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+        <i className="fa-solid fa-briefcase text-amber-300" aria-hidden="true" />
+        Impacto Profissional
+      </h2>
       <p className="mt-1 text-sm text-zinc-300">Ative um bloco de notificações para preservar foco e saúde mental.</p>
 
       <motion.button
@@ -38,7 +41,10 @@ const FocusMode = ({ onToggle }) => {
         }`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-base font-semibold">Não Incomodar</span>
+          <span className="flex items-center gap-2 text-base font-semibold">
+            <i className="fa-solid fa-bell-slash" aria-hidden="true" />
+            Não Incomodar
+          </span>
           <span className="text-sm">{enabled ? 'Ligado' : 'Desligado'}</span>
         </div>
       </motion.button>

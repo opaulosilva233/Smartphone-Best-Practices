@@ -41,9 +41,9 @@ const PrivacySettings = () => {
 
   const config = useMemo(
     () => [
-      { key: 'tracking', label: 'Permitir Rastreio de Dados' },
-      { key: 'mic', label: 'Acesso ao Microfone' },
-      { key: 'location', label: 'Localização em Background' },
+      { key: 'tracking', label: 'Permitir Rastreio de Dados', iconClass: 'fa-solid fa-fingerprint' },
+      { key: 'mic', label: 'Acesso ao Microfone', iconClass: 'fa-solid fa-microphone-lines' },
+      { key: 'location', label: 'Localização em Background', iconClass: 'fa-solid fa-location-dot' },
     ],
     [],
   )
@@ -60,7 +60,10 @@ const PrivacySettings = () => {
       transition={spring}
       className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl"
     >
-      <h2 className="text-lg font-semibold text-white">Privacidade e IP</h2>
+      <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+        <i className="fa-solid fa-user-shield text-cyan-300" aria-hidden="true" />
+        Privacidade e IP
+      </h2>
       <p className="mt-1 text-sm text-zinc-300">Definições sensíveis para reduzir recolha excessiva de dados.</p>
 
       <div className="mt-5 space-y-4">
@@ -70,7 +73,10 @@ const PrivacySettings = () => {
           return (
             <div key={item.key} className="rounded-2xl border border-white/10 bg-black/20 p-3">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-sm text-zinc-100">{item.label}</span>
+                <span className="flex items-center gap-2 text-sm text-zinc-100">
+                  <i className={`${item.iconClass} text-zinc-300`} aria-hidden="true" />
+                  {item.label}
+                </span>
                 <Toggle checked={isEnabled} onChange={() => toggleSetting(item.key)} />
               </div>
 
