@@ -17,7 +17,7 @@ import {
 import AppSocial from './components/AppSocial'
 import AppChat from './components/AppChat'
 import AppVideo from './components/AppVideo'
-import BatteryDrain from './components/BatteryDrain'
+import AppDefinicoes from './components/AppDefinicoes'
 import ContextPanel from './components/ContextPanel'
 import SmartphoneWrapper from './components/SmartphoneWrapper'
 import OpenAppShell from './components/OpenAppShell'
@@ -449,11 +449,7 @@ function App() {
     }
 
     if (phoneState === 'app_sustainability') {
-      return (
-        <OpenAppShell key="app_sustainability" title="Definições" onBack={() => setPhoneState('home')}>
-          <BatteryDrain />
-        </OpenAppShell>
-      )
+      return <AppDefinicoes key="app_sustainability" setPhoneState={setPhoneState} />
     }
 
     if (phoneState === 'app_impact') {
