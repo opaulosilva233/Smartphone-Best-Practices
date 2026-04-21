@@ -15,8 +15,8 @@ import {
   Wifi,
 } from 'lucide-react'
 import AppSocial from './components/AppSocial'
+import AppChat from './components/AppChat'
 import BatteryDrain from './components/BatteryDrain'
-import FocusMode from './components/FocusMode'
 import ContextPanel from './components/ContextPanel'
 import SmartphoneWrapper from './components/SmartphoneWrapper'
 import OpenAppShell from './components/OpenAppShell'
@@ -400,11 +400,9 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
 }
 
 function App() {
-  const [focusEnabled, setFocusEnabled] = useState(false)
   const [phoneState, setPhoneState] = useState('locked')
   const [homeUnlockTick, setHomeUnlockTick] = useState(0)
   const { currentTime, currentDate } = useCurrentTime()
-  const showFocusOverlay = phoneState === 'app_impact' && focusEnabled
 
   const openApp = (appState) => {
     setPhoneState(appState)
@@ -452,11 +450,7 @@ function App() {
     }
 
     if (phoneState === 'app_impact') {
-      return (
-        <OpenAppShell key="app_impact" title="Chat" onBack={() => setPhoneState('home')}>
-          <FocusMode onToggle={setFocusEnabled} />
-        </OpenAppShell>
-      )
+      return <AppChat key="app_impact" onBack={() => setPhoneState('home')} />
     }
 
     if (phoneState === 'app_references') {
@@ -493,12 +487,6 @@ function App() {
         </section>
       </div>
 
-      <motion.div
-        initial={false}
-        animate={{ opacity: showFocusOverlay ? 1 : 0 }}
-        transition={{ type: 'spring', stiffness: 130, damping: 24 }}
-        className="pointer-events-none fixed inset-0 z-40 bg-black/40"
-      />
     </div>
   )
 }

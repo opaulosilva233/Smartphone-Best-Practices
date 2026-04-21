@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion'
 import {
-  BatteryWarning,
   Bell,
-  Briefcase,
   ChevronLeft,
   Eye,
   EyeOff,
@@ -236,46 +234,6 @@ const AppSocial = ({ onBack }) => {
               <div className="mt-4 rounded-[1.35rem] border border-cyan-400/12 bg-cyan-400/6 p-3.5 text-sm leading-6 text-cyan-50/90">
                 <span className="font-medium text-cyan-100">Boa Pratica de IP:</span> Numa Creator Economy de constante remix, o plagio e invisivel. Credite sempre a fonte original de audio, imagem ou texto nas suas publicacoes.
               </div>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="p-4">
-              <div className="flex items-start gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-300/15 text-amber-200">
-                  <BatteryWarning className="h-5 w-5" strokeWidth={1.9} aria-hidden="true" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-zinc-100">@eco.work_balance</p>
-                  <p className="text-xs text-zinc-400">Sustentabilidade e Impacto Profissional</p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <article className="overflow-hidden rounded-[1.35rem] border border-white/8 bg-[linear-gradient(145deg,rgba(34,34,40,0.95),rgba(15,15,18,0.98))] p-3.5">
-                  <div className="flex items-center gap-2 text-amber-200">
-                    <BatteryWarning className="h-4.5 w-4.5 shrink-0" strokeWidth={1.9} aria-hidden="true" />
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">E-Waste</p>
-                  </div>
-                  <p className="mt-3 text-[12px] leading-5 text-zinc-200">
-                    Repare, nao substitua. Trocar de aparelho a cada 2 anos agrava a crise do litio e e-waste.
-                  </p>
-                </article>
-
-                <article className="overflow-hidden rounded-[1.35rem] border border-white/8 bg-[linear-gradient(145deg,rgba(34,34,40,0.95),rgba(15,15,18,0.98))] p-3.5">
-                  <div className="flex items-center gap-2 text-cyan-200">
-                    <Briefcase className="h-4.5 w-4.5 shrink-0" strokeWidth={1.9} aria-hidden="true" />
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">Desconexao</p>
-                  </div>
-                  <p className="mt-3 text-[12px] leading-5 text-zinc-200">
-                    Direito a desconexao. Agende o modo "Nao Incomodar" fora do horario laboral.
-                  </p>
-                </article>
-              </div>
-
-              <p className="mt-4 text-sm leading-6 text-zinc-300">
-                Dilema: Obsolescencia programada e a hiperconectividade profissional. Boa Pratica: Aumente a vida util do hardware (bateria entre 20%-80%). Defina barreiras claras entre o espaco fisico e o digital para proteger a saude mental e os lacos sociais.
-              </p>
             </div>
           </Card>
         </div>
