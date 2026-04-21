@@ -14,7 +14,7 @@ const quickTopics = [
   { key: 'impacto', label: 'Impacto', iconClass: 'fa-solid fa-briefcase' },
 ]
 
-const DynamicIsland = ({ className = '' }) => {
+const DynamicIsland = ({ className = '', onTopicSelect }) => {
   const [expanded, setExpanded] = useState(false)
   const containerRef = useRef(null)
 
@@ -40,6 +40,7 @@ const DynamicIsland = ({ className = '' }) => {
   const handleQuickNav = (topic) => {
     const section = document.getElementById(topic)
     section?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    onTopicSelect?.(topic)
     setExpanded(false)
   }
 
