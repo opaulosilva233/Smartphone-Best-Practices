@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import DynamicIsland from './components/DynamicIsland'
 import PrivacySettings from './components/PrivacySettings'
 import BatteryDrain from './components/BatteryDrain'
 import FocusMode from './components/FocusMode'
 import ContextPanel from './components/ContextPanel'
+import SmartphoneWrapper from './components/SmartphoneWrapper'
 
 function App() {
   const [focusEnabled, setFocusEnabled] = useState(false)
@@ -32,14 +32,9 @@ function App() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="relative h-[760px] w-[360px] rounded-[3rem] border-[12px] border-zinc-900 bg-zinc-950 p-3 shadow-2xl shadow-cyan-950/30 sm:h-[820px] sm:w-[400px] lg:h-[860px] lg:w-[420px]"
-            onMouseEnter={() => handleWidgetInteraction('intro')}
-            onClick={() => handleWidgetInteraction('intro')}
+            className="origin-center scale-[0.84] sm:scale-[0.94] lg:scale-100"
           >
-            <div className="relative h-full overflow-hidden rounded-[2.3rem] border border-white/10 bg-zinc-900/50">
-              <DynamicIsland onTopicSelect={handleWidgetInteraction} />
-
-              <main className="scrollbar-hide h-full space-y-4 overflow-y-auto px-4 pb-[120px] pt-24">
+            <SmartphoneWrapper onMouseEnter={() => handleWidgetInteraction('intro')} onClick={() => handleWidgetInteraction('intro')}>
                 <section
                   id="privacidade"
                   onMouseEnter={() => handleWidgetInteraction('privacidade')}
@@ -82,9 +77,8 @@ function App() {
                 >
                   <FocusMode onToggle={setFocusEnabled} />
                 </section>
-              </main>
 
-              <footer className="pointer-events-none absolute bottom-4 left-0 right-0 flex justify-center px-4">
+              <footer className="pointer-events-none absolute bottom-8 left-0 right-0 z-40 flex justify-center px-4">
                 <div className="pointer-events-auto flex items-center gap-3 rounded-3xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-md">
                   {phases.map((phase) => {
                     return (
@@ -102,7 +96,7 @@ function App() {
                   })}
                 </div>
               </footer>
-            </div>
+            </SmartphoneWrapper>
           </motion.div>
         </section>
       </div>
