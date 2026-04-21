@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Briefcase, ChevronLeft, Folder } from 'lucide-react'
+import { Briefcase, ChevronLeft, CheckCheck, Smile, Mic } from 'lucide-react'
 import { useState } from 'react'
 
 const spring = {
@@ -9,7 +9,7 @@ const spring = {
 }
 
 const AppChat = ({ onBack }) => {
-  const [isAutoReplyActive, setIsAutoReplyActive] = useState(false)
+  const [hasReplied, setHasReplied] = useState(false)
 
   return (
     <motion.div
@@ -17,75 +17,103 @@ const AppChat = ({ onBack }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 18 }}
       transition={{ duration: 0.28, ease: 'easeOut' }}
-      className="relative flex h-full flex-col overflow-hidden bg-zinc-950 text-white"
+      className="absolute inset-0 w-full h-full bg-[#0B141A] flex flex-col z-20 font-sans"
     >
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-zinc-800 bg-zinc-900/80 px-4 pb-4 pt-14 backdrop-blur-md">
+      {/* Header Fixo */}
+      <div className="bg-[#202C33] pt-14 pb-3 px-4 flex items-center gap-3 shadow-md z-30">
         <button
           type="button"
           onClick={onBack}
-          className="shrink-0 text-sm font-medium text-zinc-200 transition hover:text-white"
+          className="shrink-0 text-gray-300 hover:text-white transition"
         >
-          &lt; Voltar
+          <ChevronLeft size={24} />
         </button>
 
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-zinc-700 text-zinc-200 shadow-lg shadow-black/30">
-            <Folder className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+          <div className="w-10 h-10 rounded-full bg-zinc-600 flex items-center justify-center">
+            <Briefcase size={20} className="text-white" />
           </div>
 
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-white">Equipa de Projeto</p>
-            <p className="text-xs font-medium text-emerald-400">online</p>
+            <p className="truncate text-sm font-bold text-white">Equipa de Projeto</p>
+            <p className="text-xs font-medium text-green-500">Online</p>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="flex-1 overflow-y-auto px-4 pb-6 pt-4">
-        <div className="flex flex-col gap-4">
-          <div className="max-w-[85%] self-start rounded-2xl rounded-tl-sm bg-zinc-800 p-3 text-sm text-white shadow-md">
-            Pessoal, desculpem a hora (22h30). Precisava que revissem aquele relatório de viés tecnológico para amanhã de manhã. Alguém consegue?
-          </div>
+      {/* Área de Mensagens */}
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 pb-24 scrollbar-hide">
+        {/* Mensagem Recebida 1 */}
+        <div className="bg-[#202C33] text-zinc-100 p-3 rounded-2xl rounded-tl-none max-w-[85%] self-start relative shadow-sm">
+          <p className="text-sm">Pessoal, desculpem a hora (22h30). Precisava que revissem aquele relatório de viés tecnológico para amanhã de manhã. Alguém consegue?</p>
+          <span className="text-[10px] text-zinc-400 float-right mt-2 ml-3">22:30</span>
+        </div>
 
-          <div className="-mt-2 max-w-[85%] self-start rounded-2xl rounded-tl-sm bg-zinc-800 p-3 text-sm text-white shadow-md">
-            É urgente. 🚨
-          </div>
+        {/* Mensagem Recebida 2 */}
+        <div className="bg-[#202C33] text-zinc-100 p-3 rounded-2xl rounded-tl-2xl max-w-[85%] self-start relative shadow-sm">
+          <p className="text-sm">É urgente. 🚨</p>
+          <span className="text-[10px] text-zinc-400 float-right mt-2 ml-3">22:31</span>
+        </div>
 
-          <section className="mt-6 rounded-2xl border border-indigo-500/30 bg-indigo-900/20 p-4 backdrop-blur-sm">
-            <div className="flex items-center gap-2 text-indigo-100">
-              <Briefcase className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
-              <h2 className="text-sm font-semibold">Impacto Profissional &amp; Desconexão</h2>
-            </div>
-
-            <div className="mt-3 space-y-3 text-sm leading-6 text-zinc-200/95">
-              <p>
-                O smartphone esbateu a fronteira entre o escritório e a casa. O WhatsApp tornou-se uma nova esfera pública de proximidade que gera hiperconectividade.
-              </p>
-              <p>
-                Direito à Desconexão: Não normalize a urgência fora do horário laboral. A ausência de limites gera ansiedade (FOMO) e afeta os laços sociais físicos (Phubbing).
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setIsAutoReplyActive((current) => !current)}
-              className="mt-4 w-full rounded-xl bg-indigo-600 py-3 text-center font-medium text-white transition hover:bg-indigo-500"
-            >
-              {isAutoReplyActive ? 'Resposta Automática Ativa' : 'Ativar Resposta Automática: Fora de Horas'}
-            </button>
-          </section>
-
-          {isAutoReplyActive && (
+        {/* Renderização Condicional - Resposta do Utilizador */}
+        {hasReplied && (
+          <>
             <motion.div
               initial={{ opacity: 0, x: 16, y: 6 }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={spring}
-              className="max-w-[85%] self-end rounded-2xl rounded-tr-sm bg-emerald-600 p-3 text-sm text-white shadow-md"
+              className="bg-[#005C4B] text-zinc-100 p-3 rounded-2xl rounded-tr-none max-w-[85%] self-end relative shadow-sm mt-4"
             >
-              Modo Foco Ativo: A sua mensagem será lida no próximo dia útil. Proteja o seu tempo de descanso.
+              <p className="text-sm">Modo Foco Automático: A sua mensagem será lida no próximo dia útil. Proteja o seu tempo de descanso. 🛑</p>
+              <div className="flex items-center justify-end gap-1 mt-2">
+                <span className="text-[10px] text-zinc-400">22:35</span>
+                <CheckCheck size={14} className="text-blue-400" />
+              </div>
             </motion.div>
-          )}
-        </div>
-      </main>
+
+            {/* Cartão de Alerta Ético */}
+            <motion.section
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={spring}
+              className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-900/20 p-4 backdrop-blur-sm self-end max-w-[90%]"
+            >
+              <div className="flex items-center gap-2 text-emerald-100">
+                <Briefcase size={18} strokeWidth={2} aria-hidden="true" />
+                <h2 className="text-sm font-semibold">Impacto Profissional &amp; Desconexão</h2>
+              </div>
+
+              <div className="mt-3 space-y-3 text-sm leading-6 text-zinc-200/95">
+                <p>
+                  O smartphone esbateu a fronteira entre o escritório e a casa. O WhatsApp tornou-se uma nova esfera pública de proximidade que gera hiperconectividade.
+                </p>
+                <p>
+                  Direito à Desconexão: Não normalize a urgência fora do horário laboral. A ausência de limites gera ansiedade (FOMO) e afeta os laços sociais físicos (Phubbing).
+                </p>
+              </div>
+            </motion.section>
+          </>
+        )}
+      </div>
+
+      {/* Área de Input / Ação - Fundo do Ecrã */}
+      <div className="bg-[#202C33] p-4 pb-8 w-full shrink-0">
+        {!hasReplied ? (
+          <button
+            onClick={() => setHasReplied(true)}
+            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-all"
+          >
+            <Briefcase size={18} />
+            Impor Limite: Resposta Automática
+          </button>
+        ) : (
+          <div className="w-full bg-[#1C2C34] rounded-2xl px-4 py-3 flex items-center justify-between">
+            <Smile size={20} className="text-zinc-400" />
+            <div className="text-zinc-400 text-sm">Mensagens</div>
+            <Mic size={20} className="text-zinc-400" />
+          </div>
+        )}
+      </div>
     </motion.div>
   )
 }
