@@ -1,20 +1,351 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import PrivacySettings from './components/PrivacySettings'
 import BatteryDrain from './components/BatteryDrain'
 import FocusMode from './components/FocusMode'
 import ContextPanel from './components/ContextPanel'
 import SmartphoneWrapper from './components/SmartphoneWrapper'
-import LockScreen from './components/LockScreen'
-import HomeScreen from './components/HomeScreen'
 import OpenAppShell from './components/OpenAppShell'
 import BiasInsights from './components/BiasInsights'
 import ReferencesNotes from './components/ReferencesNotes'
 import useCurrentTime from './hooks/useCurrentTime'
 
+const apps = [
+  {
+    key: 'app_privacy',
+    label: 'Social',
+    emoji: '📸',
+    iconClassName: 'bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white',
+  },
+  {
+    key: 'app_bias',
+    label: 'Vídeo',
+    emoji: '🎵',
+    iconClassName:
+      'bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.45),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(248,113,113,0.45),transparent_45%),#0b0b0d] text-white',
+  },
+  {
+    key: 'app_sustainability',
+    label: 'Definições',
+    emoji: '⚙️',
+    iconClassName: 'bg-gradient-to-br from-zinc-400 to-zinc-600 text-zinc-100',
+  },
+  {
+    key: 'app_impact',
+    label: 'Chat',
+    emoji: '💬',
+    iconClassName: 'bg-gradient-to-br from-emerald-400 to-green-600 text-white',
+  },
+  {
+    key: 'app_references',
+    label: 'Referências',
+    emoji: '📚',
+    iconClassName: 'bg-gradient-to-br from-amber-100 to-yellow-300 text-zinc-800',
+  },
+]
+
+const springUnlock = {
+  type: 'spring',
+  stiffness: 300,
+  damping: 30,
+}
+
+const heavySpring = {
+  type: 'spring',
+  stiffness: 190,
+  damping: 28,
+}
+
+const glassExtreme = 'backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-4'
+
+function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
+  const [unlocking, setUnlocking] = useState(false)
+
+  const notifications = useMemo(
+    () => [
+      {
+        key: 'screen-time',
+        title: 'Tempo de Ecrã',
+        text: 'A sua média subiu para 3h 46min hoje.',
+      },
+      {
+        key: 'whatsapp',
+        title: 'Grupo de Trabalho',
+        text: '5 novas mensagens. Precisamos disto para amanhã!',
+      },
+    ],
+    []
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={unlocking ? { y: -920, opacity: 0 } : { y: 0, opacity: 1 }}
+      exit={{ opacity: 0, y: -100 }}
+      transition={unlocking ? springUnlock : { duration: 0.45, ease: 'easeOut' }}
+      onAnimationComplete={() => {
+        if (unlocking) {
+          onUnlock?.()
+        }
+      }}
+      drag={unlocking ? false : 'y'}
+      dragConstraints={{ top: 0, bottom: 0 }}
+      dragElastic={0.18}
+      dragMomentum={false}
+      onDragEnd={(_, info) => {
+        if (info.offset.y < -150) {
+          setUnlocking(true)
+        }
+      }}
+      style={{ touchAction: 'none' }}
+      className="relative flex h-full flex-col items-center justify-between overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-slate-950 via-sky-900/60 to-cyan-600/40 px-6 pb-14 pt-24"
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.28),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.18),transparent_45%)]" />
+        <div className="absolute -top-12 left-8 h-44 w-44 rounded-full bg-cyan-300/15 blur-3xl" />
+        <div className="absolute bottom-10 right-6 h-52 w-52 rounded-full bg-sky-100/15 blur-3xl" />
+      </div>
+
+      <div className="relative text-center text-white">
+        <p className="text-sm font-medium tracking-[0.14em] text-white/80">{currentDate}</p>
+        <h1 className="mt-2 text-7xl font-black leading-none">{currentTime}</h1>
+      </div>
+
+      <div className="relative w-full max-w-xs space-y-3 text-white">
+        {notifications.map((notification, index) => (
+          <motion.div
+            key={notification.key}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...heavySpring, delay: 0.1 + index * 0.06 }}
+            className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl"
+          >
+            <p className="text-sm font-semibold text-white">{notification.title}</p>
+            <p className="mt-1 text-sm text-white/80">{notification.text}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="relative flex w-full max-w-xs flex-col items-center gap-3 rounded-3xl px-4 py-3 text-white">
+        <div className="h-1.5 w-1/3 rounded-full bg-white/50 shadow-[0_0_18px_rgba(255,255,255,0.18)]" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">Deslize para desbloquear</p>
+      </div>
+    </motion.div>
+  )
+}
+
+function HomeScreenDense({ onOpenApp, onUnlockHome }) {
+  const [controlCenterOpen, setControlCenterOpen] = useState(false)
+  const [pullDownOffset, setPullDownOffset] = useState(0)
+
+  const panelTranslate = controlCenterOpen ? 0 : Math.min(0, -440 + pullDownOffset)
+  const panelOpacity = controlCenterOpen ? 1 : Math.min(1, pullDownOffset / 160)
+  const batteryLevel = 19
+
+  const controlButtons = [
+    { label: 'WiFi', icon: '📶' },
+    { label: 'Bluetooth', icon: '🟦' },
+    { label: 'Não Incomodar', icon: '🌙' },
+    { label: 'Brilho', icon: '☀️' },
+  ]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -16 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="relative h-full overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-[#101731] via-[#121a3e] to-[#05070f]"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(86,194,255,0.23),transparent_38%),radial-gradient(circle_at_90%_85%,rgba(255,195,107,0.16),transparent_35%)]" />
+
+      <motion.div
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.2}
+        dragMomentum={false}
+        style={{ touchAction: 'none' }}
+        onDrag={(_, info) => {
+          if (info.offset.y > 0) {
+            setPullDownOffset(Math.min(info.offset.y, 220))
+          }
+        }}
+        onDragEnd={(_, info) => {
+          if (info.offset.y > 90) {
+            setControlCenterOpen(true)
+          }
+          setPullDownOffset(0)
+        }}
+        className="absolute left-0 top-0 z-40 h-14 w-full"
+      />
+
+      <AnimatePresence>
+        {(controlCenterOpen || pullDownOffset > 0) && (
+          <motion.div
+            key="control-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: panelOpacity }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute inset-0 z-50"
+          >
+            <button
+              type="button"
+              aria-label="Fechar Control Center"
+              onClick={() => setControlCenterOpen(false)}
+              className="absolute inset-0 h-full w-full bg-black/20"
+            />
+
+            <motion.div
+              animate={{ y: panelTranslate }}
+              transition={heavySpring}
+              className="absolute left-0 right-0 top-0 rounded-b-[2.3rem] bg-black/40 px-4 pb-6 pt-14 backdrop-blur-3xl"
+            >
+              <div className="mx-auto h-1.5 w-24 rounded-full bg-white/50" />
+              <p className="mt-3 text-center text-[11px] uppercase tracking-[0.22em] text-zinc-200/75">Control Center</p>
+
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                {controlButtons.map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className="rounded-3xl border border-white/10 bg-white/10 px-4 py-4 text-left text-white shadow-xl backdrop-blur-xl"
+                  >
+                    <p className="text-lg">{item.icon}</p>
+                    <p className="mt-2 text-sm font-semibold">{item.label}</p>
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setControlCenterOpen(false)}
+                className="mt-5 w-full rounded-2xl border border-white/10 bg-white/10 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/85"
+              >
+                Fechar painel
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="relative grid grid-cols-4 gap-x-4 gap-y-6 px-4 pt-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ ...heavySpring, delay: onUnlockHome ? 0.03 : 0 }}
+          className={`col-span-2 row-span-2 ${glassExtreme}`}
+        >
+          <div className="flex h-full flex-col justify-between text-white">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">Clima</p>
+              <p className="mt-2 text-sm font-semibold">21°C • Ermesinde • Ensolarado</p>
+            </div>
+
+            <div className="flex items-end justify-between">
+              <div className="rounded-2xl border border-amber-200/20 bg-amber-100/10 px-2.5 py-2 text-[10px] leading-relaxed text-amber-100">
+                Localização precisa ativa (Auditoria de Dados)
+              </div>
+              <motion.div
+                animate={{ rotate: [0, 14, -8, 0], scale: [1, 1.05, 1] }}
+                transition={{ repeat: Infinity, duration: 4.2, ease: 'easeInOut' }}
+                className="relative flex h-12 w-12 items-center justify-center"
+              >
+                <div className="absolute h-11 w-11 rounded-full bg-amber-300/25 blur-sm" />
+                <span className="relative text-3xl">☀️</span>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ ...heavySpring, delay: onUnlockHome ? 0.1 : 0.04 }}
+          className={`col-span-2 row-span-1 ${glassExtreme}`}
+        >
+          <div className="flex items-center gap-3 text-white">
+            <div className="relative h-16 w-16">
+              <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
+                <circle cx="60" cy="60" r="47" fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="10" />
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="47"
+                  fill="none"
+                  stroke="rgba(250,204,21,0.95)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray="295"
+                  strokeDashoffset={295 - (295 * batteryLevel) / 100}
+                />
+              </svg>
+              <p className="absolute inset-0 flex items-center justify-center text-sm font-bold">{batteryLevel}%</p>
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">Modo Baixo Consumo</p>
+              <p className="mt-1 text-xs text-red-200/90">E-waste impact: Crítico</p>
+              <button
+                type="button"
+                onClick={() => onOpenApp('app_references')}
+                className="mt-2 text-xs font-semibold text-cyan-200 underline decoration-cyan-300/60 underline-offset-2"
+              >
+                Reciclagem de lítio (Fase 2)
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ ...heavySpring, delay: onUnlockHome ? 0.16 : 0.08 }}
+          className={`col-span-4 row-span-1 ${glassExtreme}`}
+        >
+          <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">Assistente IA</p>
+          <div className="mt-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2.5">
+            <span className="text-sm">🤖</span>
+            <p className="flex-1 text-sm text-zinc-200">Assistente Ético: Em que posso ajudar?</p>
+            <span className="rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-100">
+              Auditoria de Viés Ativa
+            </span>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ ...heavySpring, delay: onUnlockHome ? 0.22 : 0.12 }}
+          className={`col-span-4 row-span-2 ${glassExtreme}`}
+        >
+          <div className="grid grid-cols-4 gap-3">
+            {apps.map((app) => (
+              <button
+                key={app.key}
+                type="button"
+                onClick={() => onOpenApp(app.key)}
+                className="flex flex-col items-center justify-center gap-1.5"
+              >
+                <span
+                  className={`flex h-14 w-14 items-center justify-center rounded-2xl text-2xl shadow-sm ring-1 ring-white/20 ${app.iconClassName}`}
+                >
+                  {app.emoji}
+                </span>
+                <span className="text-[11px] text-zinc-300">{app.label}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
+
 function App() {
   const [focusEnabled, setFocusEnabled] = useState(false)
   const [phoneState, setPhoneState] = useState('locked')
+  const [homeUnlockTick, setHomeUnlockTick] = useState(0)
   const { currentTime, currentDate } = useCurrentTime()
   const showFocusOverlay = phoneState === 'app_impact' && focusEnabled
 
@@ -25,17 +356,20 @@ function App() {
   const renderPhoneView = () => {
     if (phoneState === 'locked') {
       return (
-        <LockScreen
+        <LockScreenPhysical
           key="locked"
           currentTime={currentTime}
           currentDate={currentDate}
-          onUnlock={() => setPhoneState('home')}
+          onUnlock={() => {
+            setHomeUnlockTick((prev) => prev + 1)
+            setPhoneState('home')
+          }}
         />
       )
     }
 
     if (phoneState === 'home') {
-      return <HomeScreen key="home" onOpenApp={openApp} />
+      return <HomeScreenDense key={`home-${homeUnlockTick}`} onOpenApp={openApp} onUnlockHome={homeUnlockTick} />
     }
 
     if (phoneState === 'app_privacy') {
@@ -78,7 +412,7 @@ function App() {
       )
     }
 
-    return <HomeScreen key="home_fallback" onOpenApp={openApp} />
+    return <HomeScreenDense key="home_fallback" onOpenApp={openApp} onUnlockHome={homeUnlockTick} />
   }
 
   return (
