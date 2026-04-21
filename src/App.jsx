@@ -403,6 +403,7 @@ function App() {
   const [phoneState, setPhoneState] = useState('locked')
   const [homeUnlockTick, setHomeUnlockTick] = useState(0)
   const [algoritmoResetAtivo, setAlgoritmoResetAtivo] = useState(false)
+  const [depolarizacaoAtiva, setDepolarizacaoAtiva] = useState(false)
   const { currentTime, currentDate } = useCurrentTime()
 
   const openApp = (appState) => {
@@ -440,6 +441,7 @@ function App() {
           key="app_bias"
           onBack={() => setPhoneState('home')}
           onResetAlgoritmo={() => setAlgoritmoResetAtivo(true)}
+          onDepolarizationAction={() => setDepolarizacaoAtiva(true)}
         />
       )
     }
@@ -468,28 +470,29 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100">
-      <div className="grid min-h-screen lg:grid-cols-2">
-        <section className="relative overflow-hidden border-b border-zinc-800/60 px-6 py-10 lg:border-b-0 lg:border-r lg:border-zinc-800/60 lg:px-10 lg:py-14">
-          <ContextPanel phoneState={phoneState} algoritmoResetAtivo={algoritmoResetAtivo} />
-        </section>
+    <div className="h-screen w-full bg-black flex flex-col lg:flex-row overflow-hidden">
+      {/* Painel Esquerdo - Contexto */}
+      <section className="hidden lg:flex lg:w-1/2 lg:h-screen flex-col justify-center py-10 px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 overflow-y-auto border-b border-zinc-800/60 lg:border-b-0 lg:border-r lg:border-zinc-800/60">
+        <ContextPanel phoneState={phoneState} algoritmoResetAtivo={algoritmoResetAtivo} depolarizacaoAtiva={depolarizacaoAtiva} />
+      </section>
 
-        <section className="sticky top-0 flex h-screen items-center justify-center bg-zinc-900/30 px-3 py-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="origin-center scale-[0.84] sm:scale-[0.94] lg:scale-100"
-          >
+      {/* Painel Direito - Smartphone */}
+      <section className="w-full lg:w-1/2 h-screen flex items-center justify-center relative bg-zinc-900/30 overflow-hidden ">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="flex items-center justify-center h-full w-full"
+        >
+          <div className="transform scale-50 sm:scale-[0.60] md:scale-[0.70] lg:scale-[0.75] xl:scale-[0.88] 2xl:scale-100 origin-center transition-transform duration-300">
             <SmartphoneWrapper currentTime={currentTime} contentClassName="space-y-0 overflow-hidden px-0 pb-0 pt-0">
               <AnimatePresence mode="wait" initial={false}>
                 {renderPhoneView()}
               </AnimatePresence>
             </SmartphoneWrapper>
-          </motion.div>
-        </section>
-      </div>
-
+          </div>
+        </motion.div>
+      </section>
     </div>
   )
 }

@@ -66,42 +66,50 @@ const cardAnimation = {
   transition: { duration: 0.34, ease: 'easeOut' },
 }
 
-function ContextPanel({ phoneState, algoritmoResetAtivo = false }) {
+function ContextPanel({ phoneState, algoritmoResetAtivo = false, depolarizacaoAtiva = false }) {
   const content = panelContent[phoneState] ?? panelContent.home
   const biasResetText =
     'Furar a bolha implica seguir intencionalmente páginas com opiniões contrárias, limpar cache das redes sociais e desativar histórico de navegação.'
-  const panelText = phoneState === 'app_bias' && algoritmoResetAtivo ? biasResetText : content.text
+  const depolarizacaoText =
+    'A diversidade de fontes é essencial para o pensamento crítico. Ao seguir perfis com perspetivas opostas, treina o algoritmo a recomendações mais equilibradas, libertando-te da polarização.'
+  
+  let panelText = content.text
+  if (phoneState === 'app_bias' && algoritmoResetAtivo) {
+    panelText = biasResetText
+  } else if (phoneState === 'app_bias' && depolarizacaoAtiva) {
+    panelText = depolarizacaoText
+  }
 
   return (
-    <div className="relative mx-auto flex min-h-full w-full max-w-2xl items-center">
-      <div className="pointer-events-none absolute -left-20 top-8 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
+    <div className="relative w-full space-y-4 lg:space-y-5">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 -bottom-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <AnimatePresence mode="wait">
-        <motion.article key={phoneState} {...cardAnimation} className="relative z-10 w-full space-y-6">
+        <motion.article key={phoneState} {...cardAnimation} className="relative z-10 w-full space-y-4 lg:space-y-5">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200/90">{content.eyebrow}</p>
 
-          <div className="space-y-3">
-            <h1 className="text-3xl font-black leading-tight text-zinc-100 sm:text-4xl lg:text-5xl">{content.title}</h1>
-            <p className="text-sm font-medium uppercase tracking-[0.16em] text-zinc-400">{content.subtitle}</p>
+          <div className="space-y-2 lg:space-y-2">
+            <h1 className="text-3xl font-black leading-tight text-zinc-100 md:text-4xl lg:text-3xl xl:text-5xl">{content.title}</h1>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-400 lg:text-[10px] md:text-sm">{content.subtitle}</p>
           </div>
 
-          <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">{panelText}</p>
+          <p className="max-w-xl text-sm leading-relaxed text-zinc-300 md:text-base lg:text-sm xl:text-base">{panelText}</p>
 
-          <div className="grid gap-4 sm:grid-cols-[1.2fr_1fr]">
-            <div className="rounded-3xl border border-zinc-700/70 bg-zinc-900/70 p-5 backdrop-blur-xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">Leitura Sociotécnica</p>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-300">
+          <div className="grid gap-3 lg:gap-3 sm:grid-cols-[1.2fr_1fr]">
+            <div className="rounded-3xl border border-zinc-700/70 bg-zinc-900/70 p-4 lg:p-3 backdrop-blur-xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-zinc-400 lg:text-[10px]">Leitura Sociotécnica</p>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-300 lg:text-xs">
                 Interage com os widgets do smartphone para mapear como cada decisão de interface representa uma consequência ética no mundo real.
               </p>
             </div>
 
-            <div className={`relative overflow-hidden rounded-3xl border border-zinc-700/70 bg-gradient-to-br ${content.accent} p-5`}>
+            <div className={`relative overflow-hidden rounded-3xl border border-zinc-700/70 bg-gradient-to-br ${content.accent} p-4 lg:p-3`}>
               <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full border border-white/20" />
               <div className="absolute -bottom-7 left-5 h-16 w-16 rounded-full border border-white/20" />
-              <p className="text-xs uppercase tracking-[0.2em] text-zinc-100/80">Foco Atual</p>
-              <p className="mt-3 text-3xl font-black text-white">{content.visualLabel}</p>
-              <p className="mt-2 text-sm text-zinc-100/90">Teoria aplicada ao gesto diário no ecrã.</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-zinc-100/80 lg:text-[10px]">Foco Atual</p>
+              <p className="mt-3 text-2xl font-black text-white md:text-3xl lg:text-xl">{content.visualLabel}</p>
+              <p className="mt-2 text-sm text-zinc-100/90 lg:text-xs">Teoria aplicada ao gesto diário no ecrã.</p>
             </div>
           </div>
         </motion.article>
