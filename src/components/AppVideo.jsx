@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { Bookmark, Filter, Heart, MessageCircle, Search, Share2, ShieldCheck } from 'lucide-react'
-import { useState } from 'react'
 
 const actionsFirstVideo = [
   { key: 'like', icon: Heart, label: 'Gostar', value: '142K' },
@@ -17,12 +16,6 @@ const actionsSecondVideo = [
 ]
 
 const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
-  const [scrollPosition, setScrollPosition] = useState(0)
-
-  const handleScroll = (e) => {
-    setScrollPosition(e.target.scrollLeft)
-  }
-
   const handleDepolarizationClick = () => {
     onDepolarizationAction?.()
   }
@@ -36,12 +29,9 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
       className="absolute inset-0 w-full h-full bg-black z-20 overflow-hidden"
     >
       {/* Scroll Container */}
-      <div
-        className="absolute inset-0 w-full h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
-        onScroll={handleScroll}
-      >
+      <div className="w-full h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide">
         {/* First Video - Viés Tecnológico */}
-        <div className="w-full h-full snap-start relative overflow-hidden bg-black">
+        <div className="w-full h-full snap-start relative flex-shrink-0 overflow-hidden bg-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-zinc-900 to-black"
@@ -107,7 +97,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
         </div>
 
         {/* Second Video - Despolarização */}
-        <div className="w-full h-full snap-start relative overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
+        <div className="w-full h-full snap-start relative flex-shrink-0 overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-rose-950 via-zinc-900 to-black"
@@ -167,19 +157,19 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
               onClick={handleDepolarizationClick}
               className="mt-3 w-full rounded-full bg-purple-600 py-2 text-sm font-semibold text-white transition hover:bg-purple-500"
             >
-              Desativar Recomendações Baseadas no Histórico
+              Desativar Histórico de Recomendações
             </button>
           </motion.div>
         </div>
       </div>
 
       {/* Fixed Header */}
-      <header className="absolute top-0 left-0 z-30 flex w-full items-center justify-between bg-gradient-to-b from-black/60 to-transparent px-4 pt-14 pb-4 text-white">
+      <header className="pointer-events-none absolute top-0 left-0 z-30 flex w-full items-center justify-between bg-gradient-to-b from-black/60 to-transparent px-4 pt-14 pb-4 text-white">
         <button
           type="button"
           onClick={onBack}
           aria-label="Voltar"
-          className="rounded-full bg-black/30 p-2 backdrop-blur-md transition hover:bg-black/45"
+          className="pointer-events-auto rounded-full bg-black/30 p-2 backdrop-blur-md transition hover:bg-black/45"
         >
           <span className="text-lg leading-none">&lt;</span>
         </button>
@@ -193,7 +183,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
         <button
           type="button"
           aria-label="Pesquisar"
-          className="rounded-full bg-black/30 p-2 backdrop-blur-md transition hover:bg-black/45"
+          className="pointer-events-auto rounded-full bg-black/30 p-2 backdrop-blur-md transition hover:bg-black/45"
         >
           <Search size={20} />
         </button>
