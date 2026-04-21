@@ -10,10 +10,12 @@ import HomeScreen from './components/HomeScreen'
 import OpenAppShell from './components/OpenAppShell'
 import BiasInsights from './components/BiasInsights'
 import ReferencesNotes from './components/ReferencesNotes'
+import useCurrentTime from './hooks/useCurrentTime'
 
 function App() {
   const [focusEnabled, setFocusEnabled] = useState(false)
   const [phoneState, setPhoneState] = useState('locked')
+  const { currentTime, currentDate } = useCurrentTime()
   const showFocusOverlay = phoneState === 'app_impact' && focusEnabled
 
   const openApp = (appState) => {
@@ -22,7 +24,14 @@ function App() {
 
   const renderPhoneView = () => {
     if (phoneState === 'locked') {
-      return <LockScreen key="locked" onUnlock={() => setPhoneState('home')} />
+      return (
+        <LockScreen
+          key="locked"
+          currentTime={currentTime}
+          currentDate={currentDate}
+          onUnlock={() => setPhoneState('home')}
+        />
+      )
     }
 
     if (phoneState === 'home') {
@@ -86,7 +95,7 @@ function App() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="origin-center scale-[0.84] sm:scale-[0.94] lg:scale-100"
           >
-            <SmartphoneWrapper contentClassName="space-y-0 overflow-hidden px-0 pb-0 pt-0">
+            <SmartphoneWrapper currentTime={currentTime} contentClassName="space-y-0 overflow-hidden px-0 pb-0 pt-0">
               <AnimatePresence mode="wait" initial={false}>
                 {renderPhoneView()}
               </AnimatePresence>

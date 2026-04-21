@@ -1,4 +1,4 @@
-const SmartphoneWrapper = ({ children, footer, className = '', contentClassName = '', ...props }) => {
+const SmartphoneWrapper = ({ children, footer, currentTime = '09:41', className = '', contentClassName = '', ...props }) => {
   return (
     <div
       className={`relative h-[820px] w-[400px] rounded-[3.5rem] border-[14px] border-zinc-900 bg-zinc-950 ring-1 ring-zinc-800 shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ${className}`}
@@ -16,7 +16,7 @@ const SmartphoneWrapper = ({ children, footer, className = '', contentClassName 
           </div>
 
           <div className="flex h-full w-full items-center justify-between">
-            <span>9:41</span>
+            <span>{currentTime}</span>
             <div className="flex items-center gap-1.5 text-[10px]">
               <svg viewBox="0 0 16 12" className="h-3.5 w-4" aria-hidden="true" fill="currentColor">
                 <path d="M1 10h2V8H1v2Zm3 0h2V6H4v4Zm3 0h2V4H7v6Zm3 0h2V2h-2v8Z" />

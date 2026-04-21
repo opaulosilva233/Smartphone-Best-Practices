@@ -6,19 +6,35 @@ const lockScreenVariants = {
   exit: { opacity: 0, y: -60 },
 }
 
-const unlockHintAnimation = {
-  opacity: [0.5, 1, 0.5],
-  y: [0, -4, 0],
+const spring = {
+  type: 'spring',
+  stiffness: 260,
+  damping: 24,
 }
 
-const LockScreen = ({ onUnlock }) => {
-  const formattedDate = new Intl.DateTimeFormat('pt-PT', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  }).format(new Date())
+const notifications = [
+  {
+    key: 'screen-time',
+    icon: 'fa-solid fa-hourglass-half',
+    iconClassName: 'bg-amber-300/20 text-amber-100',
+    title: 'Tempo de Ecrã',
+    text: 'A sua média subiu para 3h 46min hoje.',
+  },
+  {
+    key: 'whatsapp',
+    icon: 'fa-brands fa-whatsapp',
+    iconClassName: 'bg-emerald-400/20 text-emerald-200',
+    title: 'Grupo de Trabalho',
+    text: '5 novas mensagens. Precisamos disto para amanhã!',
+  },
+]
 
-  const capitalizedDate = `${formattedDate.charAt(0).toUpperCase()}${formattedDate.slice(1)}`
+const LockScreen = ({ currentTime, currentDate, onUnlock }) => {
+  const handleDragEnd = (_, info) => {
+    if (info.offset.y < -100) {
+      onUnlock?.()
+    }
+  }
 
   return (
     <motion.div
@@ -37,25 +53,48 @@ const LockScreen = ({ onUnlock }) => {
       </div>
 
       <div className="relative text-center text-white">
-        <p className="text-sm font-medium tracking-[0.14em] text-white/80">{capitalizedDate}</p>
-        <h1 className="mt-2 text-7xl font-black leading-none">09:41</h1>
+        <p className="text-sm font-medium tracking-[0.14em] text-white/80">{currentDate}</p>
+        <h1 className="mt-2 text-7xl font-black leading-none">{currentTime}</h1>
       </div>
 
-      <motion.button
-        type="button"
-        onClick={onUnlock}
-        whileTap={{ scale: 0.98 }}
-        className="relative rounded-2xl border border-white/35 bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-xl"
+      <div className="relative w-full max-w-xs space-y-3 pb-2 text-center text-white">
+        {notifications.map((notification, index) => (
+          <motion.div
+            key={notification.key}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...spring, delay: 0.12 + index * 0.07 }}
+            className="backdrop-blur-xl rounded-2xl bg-white/10 p-4 text-left shadow-lg ring-1 ring-white/10"
+          >
+            <div className="flex items-start gap-3">
+              <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${notification.iconClassName}`}>
+                <i className={`${notification.icon} text-base`} aria-hidden="true" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-white">{notification.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-white/80">{notification.text}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.16}
+        dragMomentum={false}
+        onDragEnd={handleDragEnd}
+        whileTap={{ scale: 0.99 }}
+        transition={spring}
+        style={{ touchAction: 'none' }}
+        className="relative flex w-full max-w-xs flex-col items-center gap-3 rounded-3xl px-4 py-3 text-white"
       >
-        <motion.span
-          animate={unlockHintAnimation}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="inline-flex items-center gap-2"
-        >
-          <i className="fa-solid fa-lock-open text-xs" aria-hidden="true" />
-          Clica para desbloquear
-        </motion.span>
-      </motion.button>
+        <div className="h-1.5 w-1/3 rounded-full bg-white/50 shadow-[0_0_18px_rgba(255,255,255,0.18)]" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">
+          Deslize para desbloquear
+        </p>
+      </motion.div>
     </motion.div>
   )
 }
