@@ -22,6 +22,7 @@ import SmartphoneWrapper from './components/SmartphoneWrapper'
 import OpenAppShell from './components/OpenAppShell'
 import BiasInsights from './components/BiasInsights'
 import ReferencesNotes from './components/ReferencesNotes'
+import HomeScreen from './components/HomeScreen'
 import useCurrentTime from './hooks/useCurrentTime'
 
 const apps = [
@@ -425,7 +426,7 @@ function App() {
     }
 
     if (phoneState === 'home') {
-      return <HomeScreenDense key={`home-${homeUnlockTick}`} onOpenApp={openApp} onUnlockHome={homeUnlockTick} />
+      return <HomeScreen key={`home-${homeUnlockTick}`} onOpenApp={openApp} />
     }
 
     if (phoneState === 'app_privacy') {
@@ -468,7 +469,7 @@ function App() {
       )
     }
 
-    return <HomeScreenDense key="home_fallback" onOpenApp={openApp} onUnlockHome={homeUnlockTick} />
+    return <HomeScreen key="home_fallback" onOpenApp={openApp} />
   }
 
   return (
