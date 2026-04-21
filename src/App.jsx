@@ -14,7 +14,7 @@ import {
   Sun,
   Wifi,
 } from 'lucide-react'
-import PrivacySettings from './components/PrivacySettings'
+import AppSocial from './components/AppSocial'
 import BatteryDrain from './components/BatteryDrain'
 import FocusMode from './components/FocusMode'
 import ContextPanel from './components/ContextPanel'
@@ -431,9 +431,7 @@ function App() {
 
     if (phoneState === 'app_privacy') {
       return (
-        <OpenAppShell key="app_privacy" title="Social" onBack={() => setPhoneState('home')}>
-          <PrivacySettings />
-        </OpenAppShell>
+        <AppSocial key="app_privacy" onBack={() => setPhoneState('home')} />
       )
     }
 
