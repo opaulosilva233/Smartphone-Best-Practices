@@ -1,15 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion'
 
 const panelContent = {
-  intro: {
+  locked: {
+    eyebrow: 'Sistema em Espera',
+    title: 'Ecran de Bloqueio',
+    subtitle: 'Primeira camada de confianca e controlo',
+    text: 'O bloqueio reforca a ideia de soberania digital: antes de qualquer feed, existe uma fronteira clara entre o dispositivo e o acesso.',
+    visualLabel: 'Locked',
+    accent: 'from-sky-500/35 to-indigo-400/25',
+  },
+  home: {
     eyebrow: 'Seminário de Ética e Convergência',
-    title: 'Fase 3: Ética na Era da Convergência',
+    title: 'Ecran Inicial',
     subtitle: 'Paulo Silva & Francisco Rebelo | ISTEC Porto',
-    text: 'Uma análise sociotécnica sobre como o dispositivo que levamos no bolso redefiniu o contrato social, a privacidade e a nossa relação com a realidade.',
+    text: 'A grelha de apps simula o ecossistema de escolhas diarias: cada icone abre uma camada etica distinta do uso do smartphone.',
     visualLabel: 'Convergência',
     accent: 'from-cyan-400/35 to-emerald-300/20',
   },
-  privacidade: {
+  app_privacy: {
     eyebrow: 'Produção e Dados',
     title: 'Privacidade e a Creator Economy',
     subtitle: 'Economia criativa e vigilância silenciosa',
@@ -17,7 +25,7 @@ const panelContent = {
     visualLabel: 'Dados',
     accent: 'from-sky-400/30 to-cyan-300/20',
   },
-  vies: {
+  app_bias: {
     eyebrow: 'Media e Cognição',
     title: 'O Algoritmo como Editor',
     subtitle: 'Curadoria automatizada da atenção',
@@ -25,7 +33,7 @@ const panelContent = {
     visualLabel: 'Filtro',
     accent: 'from-amber-400/30 to-orange-300/20',
   },
-  sustentabilidade: {
+  app_sustainability: {
     eyebrow: 'Infraestrutura Material',
     title: 'O Custo Físico do Digital',
     subtitle: 'Hardware, cadeia de valor e longevidade',
@@ -33,13 +41,21 @@ const panelContent = {
     visualLabel: 'E-Waste',
     accent: 'from-emerald-400/30 to-lime-300/20',
   },
-  impacto: {
+  app_impact: {
     eyebrow: 'Relações e Trabalho',
     title: 'Espelho e Palco',
     subtitle: 'Identidade digital e convivência',
     text: 'Sherry Turkle afirma que o smartphone reflete a nossa procura por validação . Fenómenos como o Phubbing e o FOMO alteram os laços sociais, exigindo novas éticas de desconexão no ambiente profissional .',
     visualLabel: 'FOMO',
     accent: 'from-rose-400/30 to-red-300/20',
+  },
+  app_references: {
+    eyebrow: 'Fundamentacao Academica',
+    title: 'Referencias e Fontes',
+    subtitle: 'Base teorica para a leitura sociotecnica',
+    text: 'Uma compilacao em formato APA 7.a edicao com os principais autores e relatorios que sustentam as conclusoes sobre privacidade, vies, impacto e sustentabilidade.',
+    visualLabel: 'APA',
+    accent: 'from-amber-300/40 to-yellow-200/25',
   },
 }
 
@@ -50,8 +66,8 @@ const cardAnimation = {
   transition: { duration: 0.34, ease: 'easeOut' },
 }
 
-function ContextPanel({ activeSection }) {
-  const content = panelContent[activeSection] ?? panelContent.intro
+function ContextPanel({ phoneState }) {
+  const content = panelContent[phoneState] ?? panelContent.home
 
   return (
     <div className="relative mx-auto flex min-h-full w-full max-w-2xl items-center">
@@ -59,7 +75,7 @@ function ContextPanel({ activeSection }) {
       <div className="pointer-events-none absolute -right-16 bottom-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <AnimatePresence mode="wait">
-        <motion.article key={activeSection} {...cardAnimation} className="relative z-10 w-full space-y-6">
+        <motion.article key={phoneState} {...cardAnimation} className="relative z-10 w-full space-y-6">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200/90">{content.eyebrow}</p>
 
           <div className="space-y-3">
