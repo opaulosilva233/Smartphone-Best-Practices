@@ -402,6 +402,7 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
 function App() {
   const [phoneState, setPhoneState] = useState('locked')
   const [homeUnlockTick, setHomeUnlockTick] = useState(0)
+  const [algoritmoResetAtivo, setAlgoritmoResetAtivo] = useState(false)
   const { currentTime, currentDate } = useCurrentTime()
 
   const openApp = (appState) => {
@@ -434,7 +435,13 @@ function App() {
     }
 
     if (phoneState === 'app_bias') {
-      return <AppVideo key="app_bias" onBack={() => setPhoneState('home')} />
+      return (
+        <AppVideo
+          key="app_bias"
+          onBack={() => setPhoneState('home')}
+          onResetAlgoritmo={() => setAlgoritmoResetAtivo(true)}
+        />
+      )
     }
 
     if (phoneState === 'app_sustainability') {
@@ -464,7 +471,7 @@ function App() {
     <div className="min-h-screen bg-black text-zinc-100">
       <div className="grid min-h-screen lg:grid-cols-2">
         <section className="relative overflow-hidden border-b border-zinc-800/60 px-6 py-10 lg:border-b-0 lg:border-r lg:border-zinc-800/60 lg:px-10 lg:py-14">
-          <ContextPanel phoneState={phoneState} />
+          <ContextPanel phoneState={phoneState} algoritmoResetAtivo={algoritmoResetAtivo} />
         </section>
 
         <section className="sticky top-0 flex h-screen items-center justify-center bg-zinc-900/30 px-3 py-6">

@@ -66,8 +66,11 @@ const cardAnimation = {
   transition: { duration: 0.34, ease: 'easeOut' },
 }
 
-function ContextPanel({ phoneState }) {
+function ContextPanel({ phoneState, algoritmoResetAtivo = false }) {
   const content = panelContent[phoneState] ?? panelContent.home
+  const biasResetText =
+    'Furar a bolha implica seguir intencionalmente páginas com opiniões contrárias, limpar cache das redes sociais e desativar histórico de navegação.'
+  const panelText = phoneState === 'app_bias' && algoritmoResetAtivo ? biasResetText : content.text
 
   return (
     <div className="relative mx-auto flex min-h-full w-full max-w-2xl items-center">
@@ -83,7 +86,7 @@ function ContextPanel({ phoneState }) {
             <p className="text-sm font-medium uppercase tracking-[0.16em] text-zinc-400">{content.subtitle}</p>
           </div>
 
-          <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">{content.text}</p>
+          <p className="max-w-xl text-base leading-relaxed text-zinc-300 sm:text-lg">{panelText}</p>
 
           <div className="grid gap-4 sm:grid-cols-[1.2fr_1fr]">
             <div className="rounded-3xl border border-zinc-700/70 bg-zinc-900/70 p-5 backdrop-blur-xl">
