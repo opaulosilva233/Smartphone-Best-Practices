@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Bookmark, Filter, Heart, MessageCircle, Search, Share2, ShieldCheck } from 'lucide-react'
 
@@ -16,8 +17,20 @@ const actionsSecondVideo = [
 ]
 
 const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
+  const [currentVideo, setCurrentVideo] = useState(0)
+
   const handleDepolarizationClick = () => {
     onDepolarizationAction?.()
+  }
+
+  const handleDragEnd = (event, info) => {
+    const swipeThreshold = 50
+
+    if (info.offset.y < -swipeThreshold && currentVideo === 0) {
+      setCurrentVideo(1)
+    } else if (info.offset.y > swipeThreshold && currentVideo === 1) {
+      setCurrentVideo(0)
+    }
   }
 
   return (
@@ -28,10 +41,17 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
       transition={{ duration: 0.28, ease: 'easeOut' }}
       className="absolute inset-0 w-full h-full bg-black z-20 overflow-hidden"
     >
-      {/* Scroll Container */}
-      <div className="w-full h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide">
+      <motion.div
+        className="w-full h-full flex flex-col"
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.2}
+        onDragEnd={handleDragEnd}
+        animate={{ y: `-${currentVideo * 100}%` }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      >
         {/* First Video - Viés Tecnológico */}
-        <div className="w-full h-full snap-start relative flex-shrink-0 overflow-hidden bg-black">
+        <div className="w-full h-full flex-shrink-0 relative overflow-hidden bg-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-zinc-900 to-black"
@@ -97,7 +117,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
         </div>
 
         {/* Second Video - Despolarização */}
-        <div className="w-full h-full snap-start relative flex-shrink-0 overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
+        <div className="w-full h-full flex-shrink-0 relative overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-rose-950 via-zinc-900 to-black"
@@ -161,7 +181,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
             </button>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Fixed Header */}
       <header className="pointer-events-none absolute top-0 left-0 z-30 flex w-full items-center justify-between bg-gradient-to-b from-black/60 to-transparent px-4 pt-14 pb-4 text-white">
