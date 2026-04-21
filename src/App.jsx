@@ -16,11 +16,11 @@ import {
 } from 'lucide-react'
 import AppSocial from './components/AppSocial'
 import AppChat from './components/AppChat'
+import AppVideo from './components/AppVideo'
 import BatteryDrain from './components/BatteryDrain'
 import ContextPanel from './components/ContextPanel'
 import SmartphoneWrapper from './components/SmartphoneWrapper'
 import OpenAppShell from './components/OpenAppShell'
-import BiasInsights from './components/BiasInsights'
 import ReferencesNotes from './components/ReferencesNotes'
 import HomeScreen from './components/HomeScreen'
 import useCurrentTime from './hooks/useCurrentTime'
@@ -434,11 +434,7 @@ function App() {
     }
 
     if (phoneState === 'app_bias') {
-      return (
-        <OpenAppShell key="app_bias" title="Vídeo" onBack={() => setPhoneState('home')}>
-          <BiasInsights />
-        </OpenAppShell>
-      )
+      return <AppVideo key="app_bias" onBack={() => setPhoneState('home')} />
     }
 
     if (phoneState === 'app_sustainability') {
