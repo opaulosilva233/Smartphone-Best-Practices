@@ -118,11 +118,11 @@ const AppSocial = ({ onBack }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 18 }}
       transition={{ duration: 0.28, ease: 'easeOut' }}
-      className="relative flex h-full flex-col overflow-hidden rounded-[2.2rem] bg-[radial-gradient(circle_at_top,rgba(39,39,42,0.85),transparent_34%),radial-gradient(circle_at_80%_10%,rgba(34,197,94,0.14),transparent_28%),radial-gradient(circle_at_20%_90%,rgba(14,165,233,0.12),transparent_30%),#09090b] text-zinc-100"
+      className="absolute inset-0 w-full h-full bg-zinc-950 flex flex-col z-20 text-zinc-100"
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_20%,transparent_80%,rgba(255,255,255,0.02))]" />
 
-      <header className="sticky top-0 z-30 border-b border-white/6 bg-zinc-950/92 px-4 pt-14 pb-4 backdrop-blur-xl">
+      <header className="relative z-30 border-b border-white/6 bg-zinc-950/92 px-4 pt-14 pb-4 backdrop-blur-xl">
         <div className="grid grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-3">
           <button
             type="button"
@@ -148,7 +148,7 @@ const AppSocial = ({ onBack }) => {
         </div>
       </header>
 
-      <main className="scrollbar-hide flex-1 overflow-y-auto px-4 pb-32 pt-4">
+      <main className="flex-1 overflow-y-auto pb-24 scrollbar-hide px-4 pt-4">
         <section className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {stories.map((story) => {
             const StoryIcon = story.icon

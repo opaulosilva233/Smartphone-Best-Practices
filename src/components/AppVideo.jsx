@@ -33,15 +33,15 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.28, ease: 'easeOut' }}
-      className="relative h-full w-full rounded-[2.5rem] bg-black"
+      className="absolute inset-0 w-full h-full bg-black z-20 overflow-hidden"
     >
       {/* Scroll Container */}
       <div
-        className="h-full w-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
+        className="absolute inset-0 w-full h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
         onScroll={handleScroll}
       >
         {/* First Video - Viés Tecnológico */}
-        <div className="relative h-full w-full flex-shrink-0 snap-start overflow-hidden bg-black">
+        <div className="w-full h-full snap-start relative overflow-hidden bg-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-zinc-900 to-black"
@@ -107,7 +107,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
         </div>
 
         {/* Second Video - Despolarização */}
-        <div className="relative h-full w-full flex-shrink-0 snap-start overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
+        <div className="w-full h-full snap-start relative overflow-hidden bg-gradient-to-br from-rose-950 via-zinc-900 to-black">
           <motion.div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-br from-rose-950 via-zinc-900 to-black"
@@ -174,7 +174,7 @@ const AppVideo = ({ onBack, onResetAlgoritmo, onDepolarizationAction }) => {
       </div>
 
       {/* Fixed Header */}
-      <header className="fixed top-0 z-20 flex w-full items-center justify-between rounded-t-[2.5rem] border-b border-white/5 bg-black/60 px-4 pt-14 pb-4 text-white backdrop-blur-md">
+      <header className="absolute top-0 left-0 z-30 flex w-full items-center justify-between bg-gradient-to-b from-black/60 to-transparent px-4 pt-14 pb-4 text-white">
         <button
           type="button"
           onClick={onBack}

@@ -71,8 +71,9 @@ const HomeScreen = ({ onOpenApp }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="relative h-full overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-sky-500/30 via-indigo-700/35 to-zinc-950"
+      className="absolute inset-0 w-full h-full flex flex-col pt-12 pb-24 px-5 z-10 overflow-y-auto scrollbar-hide"
     >
+      <div className="absolute inset-0 bg-gradient-to-b from-sky-500/30 via-indigo-700/35 to-zinc-950" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.28),transparent_45%)]" />
 
       <AnimatePresence>
@@ -157,7 +158,7 @@ const HomeScreen = ({ onOpenApp }) => {
         ) : null}
       </AnimatePresence>
 
-      <div className="grid grid-cols-4 gap-4 px-5 pt-12 relative z-10">
+      <div className="relative z-10 grid grid-cols-4 gap-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
