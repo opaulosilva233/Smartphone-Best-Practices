@@ -1,5 +1,19 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useMemo, useState } from 'react'
+import {
+  Bluetooth,
+  BookOpen,
+  Camera,
+  Hourglass,
+  MessageCircle,
+  MessageSquare,
+  Moon,
+  Play,
+  Settings,
+  Sparkles,
+  Sun,
+  Wifi,
+} from 'lucide-react'
 import PrivacySettings from './components/PrivacySettings'
 import BatteryDrain from './components/BatteryDrain'
 import FocusMode from './components/FocusMode'
@@ -14,33 +28,33 @@ const apps = [
   {
     key: 'app_privacy',
     label: 'Social',
-    emoji: '📸',
-    iconClassName: 'bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white',
+    icon: Camera,
+    iconClassName: 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 text-white',
   },
   {
     key: 'app_bias',
     label: 'Vídeo',
-    emoji: '🎵',
+    icon: Play,
     iconClassName:
       'bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.45),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(248,113,113,0.45),transparent_45%),#0b0b0d] text-white',
   },
   {
     key: 'app_sustainability',
     label: 'Definições',
-    emoji: '⚙️',
-    iconClassName: 'bg-gradient-to-br from-zinc-400 to-zinc-600 text-zinc-100',
+    icon: Settings,
+    iconClassName: 'bg-gradient-to-b from-zinc-300 to-zinc-500 text-zinc-100',
   },
   {
     key: 'app_impact',
     label: 'Chat',
-    emoji: '💬',
-    iconClassName: 'bg-gradient-to-br from-emerald-400 to-green-600 text-white',
+    icon: MessageSquare,
+    iconClassName: 'bg-green-500 text-white',
   },
   {
     key: 'app_references',
     label: 'Referências',
-    emoji: '📚',
-    iconClassName: 'bg-gradient-to-br from-amber-100 to-yellow-300 text-zinc-800',
+    icon: BookOpen,
+    iconClassName: 'bg-gradient-to-br from-amber-100 to-yellow-200 text-zinc-800',
   },
 ]
 
@@ -56,7 +70,8 @@ const heavySpring = {
   damping: 28,
 }
 
-const glassExtreme = 'backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-4'
+const glassExtreme =
+  'backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-4 shadow-2xl shadow-black/45'
 
 function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
   const [unlocking, setUnlocking] = useState(false)
@@ -65,11 +80,15 @@ function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
     () => [
       {
         key: 'screen-time',
+        icon: Hourglass,
+        iconClassName: 'text-violet-200',
         title: 'Tempo de Ecrã',
         text: 'A sua média subiu para 3h 46min hoje.',
       },
       {
         key: 'whatsapp',
+        icon: MessageCircle,
+        iconClassName: 'text-green-500',
         title: 'Grupo de Trabalho',
         text: '5 novas mensagens. Precisamos disto para amanhã!',
       },
@@ -118,9 +137,12 @@ function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...heavySpring, delay: 0.1 + index * 0.06 }}
-            className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl"
+            className="rounded-2xl bg-black/20 p-4 backdrop-blur-md border border-white/10 shadow-xl"
           >
-            <p className="text-sm font-semibold text-white">{notification.title}</p>
+            <div className="flex items-center gap-2">
+              <notification.icon className={`h-4 w-4 ${notification.iconClassName}`} strokeWidth={2.1} aria-hidden="true" />
+              <p className="text-sm font-semibold text-white">{notification.title}</p>
+            </div>
             <p className="mt-1 text-sm text-white/80">{notification.text}</p>
           </motion.div>
         ))}
@@ -143,10 +165,10 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
   const batteryLevel = 19
 
   const controlButtons = [
-    { label: 'WiFi', icon: '📶' },
-    { label: 'Bluetooth', icon: '🟦' },
-    { label: 'Não Incomodar', icon: '🌙' },
-    { label: 'Brilho', icon: '☀️' },
+    { label: 'WiFi', icon: Wifi },
+    { label: 'Bluetooth', icon: Bluetooth },
+    { label: 'Não Incomodar', icon: Moon },
+    { label: 'Brilho', icon: Sun },
   ]
 
   return (
@@ -211,7 +233,7 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
                     type="button"
                     className="rounded-3xl border border-white/10 bg-white/10 px-4 py-4 text-left text-white shadow-xl backdrop-blur-xl"
                   >
-                    <p className="text-lg">{item.icon}</p>
+                    <item.icon className="h-5 w-5" strokeWidth={2.1} aria-hidden="true" />
                     <p className="mt-2 text-sm font-semibold">{item.label}</p>
                   </button>
                 ))}
@@ -239,7 +261,8 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
           <div className="flex h-full flex-col justify-between text-white">
             <div>
               <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">Clima</p>
-              <p className="mt-2 text-sm font-semibold">21°C • Ermesinde • Ensolarado</p>
+              <p className="mt-2 text-4xl font-light tracking-tight">21°C</p>
+              <p className="mt-1 text-sm text-white/85">Ermesinde • Ensolarado</p>
             </div>
 
             <div className="flex items-end justify-between">
@@ -252,7 +275,7 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
                 className="relative flex h-12 w-12 items-center justify-center"
               >
                 <div className="absolute h-11 w-11 rounded-full bg-amber-300/25 blur-sm" />
-                <span className="relative text-3xl">☀️</span>
+                <Sun className="relative h-8 w-8 text-amber-300" strokeWidth={2} aria-hidden="true" />
               </motion.div>
             </div>
           </div>
@@ -305,7 +328,21 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
         >
           <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">Assistente IA</p>
           <div className="mt-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/20 px-3 py-2.5">
-            <span className="text-sm">🤖</span>
+            <motion.div
+              animate={{ rotate: [0, -8, 8, 0], scale: [1, 1.08, 1] }}
+              transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut' }}
+              className="relative"
+            >
+              <Sparkles
+                className="h-4 w-4 text-transparent"
+                strokeWidth={2.1}
+                aria-hidden="true"
+                style={{
+                  stroke: 'url(#aiSparkleGradient)',
+                  filter: 'drop-shadow(0 0 10px rgba(125,211,252,0.55))',
+                }}
+              />
+            </motion.div>
             <p className="flex-1 text-sm text-zinc-200">Assistente Ético: Em que posso ajudar?</p>
             <span className="rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-100">
               Auditoria de Viés Ativa
@@ -319,6 +356,15 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
           transition={{ ...heavySpring, delay: onUnlockHome ? 0.22 : 0.12 }}
           className={`col-span-4 row-span-2 ${glassExtreme}`}
         >
+          <svg width="0" height="0" className="absolute">
+            <defs>
+              <linearGradient id="aiSparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#67e8f9" />
+                <stop offset="50%" stopColor="#f9a8d4" />
+                <stop offset="100%" stopColor="#fef08a" />
+              </linearGradient>
+            </defs>
+          </svg>
           <div className="grid grid-cols-4 gap-3">
             {apps.map((app) => (
               <button
@@ -327,11 +373,21 @@ function HomeScreenDense({ onOpenApp, onUnlockHome }) {
                 onClick={() => onOpenApp(app.key)}
                 className="flex flex-col items-center justify-center gap-1.5"
               >
-                <span
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl text-2xl shadow-sm ring-1 ring-white/20 ${app.iconClassName}`}
-                >
-                  {app.emoji}
-                </span>
+                {app.key === 'app_bias' ? (
+                  <span
+                    className={`relative flex h-14 w-14 items-center justify-center rounded-2xl ring-1 ring-white/20 shadow-2xl shadow-black/45 ${app.iconClassName}`}
+                  >
+                    <Play className="absolute h-6 w-6 -translate-x-[1px] translate-y-[1px] text-cyan-300/75" strokeWidth={2.4} fill="currentColor" />
+                    <Play className="absolute h-6 w-6 translate-x-[1px] -translate-y-[1px] text-rose-300/75" strokeWidth={2.4} fill="currentColor" />
+                    <Play className="relative h-6 w-6 text-white" strokeWidth={2.4} fill="currentColor" />
+                  </span>
+                ) : (
+                  <span
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-2xl shadow-black/45 ring-1 ring-white/20 ${app.iconClassName}`}
+                  >
+                    <app.icon className="h-6 w-6" strokeWidth={2.1} aria-hidden="true" />
+                  </span>
+                )}
                 <span className="text-[11px] text-zinc-300">{app.label}</span>
               </button>
             ))}
