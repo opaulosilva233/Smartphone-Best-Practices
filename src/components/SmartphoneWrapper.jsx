@@ -9,7 +9,7 @@ const SmartphoneWrapper = ({ children, footer, currentTime = '09:41', className 
       <div className="absolute -left-[16px] top-68 top-[17rem] h-16 w-1.5 rounded-l-md bg-zinc-800" />
       <div className="absolute -right-[16px] top-56 h-20 w-1.5 rounded-r-md border-r border-y border-zinc-700 bg-zinc-800" />
 
-      <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] bg-zinc-900/55">
+      <div className="relative w-full h-full overflow-hidden rounded-[2.5rem] bg-black">
         <div className="absolute left-0 top-0 z-50 h-12 w-full px-6 text-xs font-semibold text-white">
           <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="h-7 w-32 rounded-full bg-black" />
@@ -35,7 +35,7 @@ const SmartphoneWrapper = ({ children, footer, currentTime = '09:41', className 
           </div>
         </div>
 
-        <main className={`scrollbar-hide h-full space-y-4 overflow-y-auto px-4 pb-24 pt-16 ${contentClassName}`}>{children}</main>
+        <main className={`relative scrollbar-hide h-full space-y-4 overflow-y-auto px-4 pb-24 pt-16 ${contentClassName}`}>{children}</main>
 
         {footer}
 

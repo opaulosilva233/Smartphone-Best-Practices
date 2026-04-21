@@ -118,8 +118,10 @@ function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
         }
       }}
       style={{ touchAction: 'none' }}
-      className="relative flex h-full flex-col items-center justify-between overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-slate-950 via-sky-900/60 to-cyan-600/40 px-6 pb-14 pt-24"
+      className="absolute inset-0 w-full h-full flex flex-col justify-between pt-20 pb-8 px-4 z-10"
     >
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-teal-900/40 to-slate-900 -z-10" />
+
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.28),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.18),transparent_45%)]" />
         <div className="absolute -top-12 left-8 h-44 w-44 rounded-full bg-cyan-300/15 blur-3xl" />
@@ -131,7 +133,7 @@ function LockScreenPhysical({ currentTime, currentDate, onUnlock }) {
         <h1 className="mt-2 text-7xl font-black leading-none">{currentTime}</h1>
       </div>
 
-      <div className="relative w-full max-w-xs space-y-3 text-white">
+      <div className="relative w-full max-w-xs my-auto space-y-3 text-white">
         {notifications.map((notification, index) => (
           <motion.div
             key={notification.key}
