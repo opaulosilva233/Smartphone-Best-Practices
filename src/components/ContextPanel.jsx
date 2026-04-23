@@ -1,21 +1,41 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { GraduationCap } from 'lucide-react'
+import {
+  BatteryCharging,
+  BellOff,
+  Clock,
+  EyeOff,
+  FilterX,
+  GraduationCap,
+  History,
+  LayoutGrid,
+  Moon,
+  PlaySquare,
+  PowerOff,
+  Recycle,
+  Search,
+  ShieldAlert,
+  Users,
+  Wrench,
+} from 'lucide-react'
 
 const contextData = {
   locked: {
     title: 'Soberania Digital',
     points: [
       {
-        highlight: 'Desative notificações não essenciais',
-        text: ' para recuperar o controlo da sua atenção.',
+        icon: BellOff,
+        title: 'Desative notificações não essenciais',
+        text: 'para recuperar o controlo da sua atenção.',
       },
       {
-        highlight: 'Organize o ecrã inicial com ferramentas úteis',
-        text: ' e esconda apps de distração (redes sociais/jogos).',
+        icon: LayoutGrid,
+        title: 'Organize o ecrã inicial com ferramentas úteis',
+        text: 'e esconda apps de distração (redes sociais/jogos).',
       },
       {
-        highlight: 'Defina períodos de "Ecrã Negro" diários',
-        text: ' para criar momentos de total desconexão.',
+        icon: Moon,
+        title: 'Defina períodos de "Ecrã Negro" diários',
+        text: 'para criar momentos de total desconexão.',
       },
     ],
     focus: 'Otimização Intencional',
@@ -24,16 +44,19 @@ const contextData = {
     title: 'Soberania Digital',
     points: [
       {
-        highlight: 'Desative notificações não essenciais',
-        text: ' para recuperar o controlo da sua atenção.',
+        icon: BellOff,
+        title: 'Desative notificações não essenciais',
+        text: 'para recuperar o controlo da sua atenção.',
       },
       {
-        highlight: 'Organize o ecrã inicial com ferramentas úteis',
-        text: ' e esconda apps de distração (redes sociais/jogos).',
+        icon: LayoutGrid,
+        title: 'Organize o ecrã inicial com ferramentas úteis',
+        text: 'e esconda apps de distração (redes sociais/jogos).',
       },
       {
-        highlight: 'Defina períodos de "Ecrã Negro" diários',
-        text: ' para criar momentos de total desconexão.',
+        icon: Moon,
+        title: 'Defina períodos de "Ecrã Negro" diários',
+        text: 'para criar momentos de total desconexão.',
       },
     ],
     focus: 'Otimização Intencional',
@@ -42,16 +65,19 @@ const contextData = {
     title: 'Higiene de Privacidade',
     points: [
       {
-        highlight: 'Aplique o Princípio do Menor Privilégio',
-        text: ': revogue acessos desnecessários (câmara, microfone, localização).',
+        icon: ShieldAlert,
+        title: 'Aplique o Princípio do Menor Privilégio:',
+        text: 'revogue acessos desnecessários (câmara, microfone, localização).',
       },
       {
-        highlight: 'Desative o rastreio de atividade inter-apps',
-        text: ' nas definições do sistema para reduzir a pegada digital.',
+        icon: EyeOff,
+        title: 'Desative o rastreio de atividade inter-apps',
+        text: 'nas definições do sistema para reduzir a pegada digital.',
       },
       {
-        highlight: 'Audite permissões regularmente',
-        text: ': questione sempre por que motivo uma app "gratuita" exige os seus dados.',
+        icon: Search,
+        title: 'Audite permissões regularmente:',
+        text: 'questione sempre por que motivo uma app "gratuita" exige os seus dados.',
       },
     ],
     focus: 'Auditoria de Dados',
@@ -60,16 +86,19 @@ const contextData = {
     title: 'Hacking do Algoritmo',
     points: [
       {
-        highlight: 'Fure a bolha ativamente',
-        text: ': siga criadores e fontes com perspetivas contrárias às suas.',
+        icon: FilterX,
+        title: 'Fure a Bolha Ativamente:',
+        text: 'siga intencionalmente criadores e fontes com perspetivas contrárias às suas.',
       },
       {
-        highlight: 'Limpe o histórico de visualizações e a cache',
-        text: ' regularmente para resetar recomendações viciadas.',
+        icon: History,
+        title: 'Limpe o histórico de visualizações',
+        text: 'e a cache regularmente para "resetar" as recomendações viciadas.',
       },
       {
-        highlight: 'Desative a reprodução automática (Autoplay)',
-        text: ' para quebrar o ciclo de retenção infinita.',
+        icon: PlaySquare,
+        title: 'Desative a reprodução automática (Autoplay)',
+        text: 'para quebrar o ciclo de retenção infinita.',
       },
     ],
     focus: 'Pensamento Crítico',
@@ -78,16 +107,19 @@ const contextData = {
     title: 'Ética da Hiperconectividade',
     points: [
       {
-        highlight: 'Exerça o direito à desconexão',
-        text: ': agende o modo "Não Incomodar" fora do horário laboral.',
+        icon: PowerOff,
+        title: 'Exerça o Direito à Desconexão:',
+        text: 'agende o modo "Não Incomodar" fora do horário laboral.',
       },
       {
-        highlight: 'Combata o phubbing',
-        text: ': guarde o smartphone quando estiver a interagir presencialmente com alguém.',
+        icon: Users,
+        title: 'Combata o Phubbing:',
+        text: 'guarde fisicamente o smartphone quando interagir presencialmente com alguém.',
       },
       {
-        highlight: 'Desnormalize a urgência',
-        text: ': ative respostas automáticas de ausência para educar o círculo profissional.',
+        icon: Clock,
+        title: 'Desnormalize a Urgência:',
+        text: 'ative respostas automáticas de ausência para educar o seu círculo profissional.',
       },
     ],
     focus: 'Limites Saudáveis',
@@ -96,16 +128,19 @@ const contextData = {
     title: 'Combate ao E-Waste',
     points: [
       {
-        highlight: 'Exija o direito à reparação',
-        text: ': substitua bateria ou ecrã antes de comprar um aparelho novo.',
+        icon: Wrench,
+        title: 'Exija o direito à reparação:',
+        text: 'substitua bateria ou ecrã antes de comprar um aparelho novo.',
       },
       {
-        highlight: 'Otimize a vida química do lítio',
-        text: ': mantenha a carga do dispositivo entre 20% e 80%.',
+        icon: BatteryCharging,
+        title: 'Otimize a vida química do lítio:',
+        text: 'mantenha a carga do dispositivo entre 20% e 80%.',
       },
       {
-        highlight: 'Recicle com responsabilidade',
-        text: ': entregue hardware antigo em centros certificados para recuperação de minerais raros.',
+        icon: Recycle,
+        title: 'Recicle com responsabilidade:',
+        text: 'entregue hardware antigo em centros certificados para recuperação de minerais raros.',
       },
     ],
     focus: 'Sustentabilidade de Hardware',
@@ -145,12 +180,13 @@ function ContextPanel({ phoneState, activeApp }) {
             </h1>
 
             <div>
-              {content.points.map((point) => (
-                <div key={`${content.title}-${point.highlight}`} className="flex items-start gap-3 2xl:gap-5 mb-4 2xl:mb-8 group">
-                  <div className="w-1 h-full min-h-[24px] bg-teal-500 rounded-full mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+              {content.points.map((Item) => (
+                <div key={`${content.title}-${Item.title}`} className="flex items-start gap-4 2xl:gap-5 mb-5 2xl:mb-8 group">
+                  <div className="mt-1 p-2 rounded-xl bg-teal-500/10 text-teal-400 group-hover:bg-teal-500 group-hover:text-black transition-colors shrink-0">
+                    <Item.icon size={20} className="2xl:w-6 2xl:h-6" />
+                  </div>
                   <p className="text-base lg:text-lg 2xl:text-2xl text-zinc-300 font-light leading-snug 2xl:leading-relaxed">
-                    <span className="font-semibold text-white">{point.highlight}</span>
-                    {point.text}
+                    <strong className="font-semibold text-white">{Item.title}</strong> {Item.text}
                   </p>
                 </div>
               ))}
