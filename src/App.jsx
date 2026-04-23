@@ -20,7 +20,6 @@ import AppVideo from './components/AppVideo'
 import AppDefinicoes from './components/AppDefinicoes'
 import ContextPanel from './components/ContextPanel'
 import SmartphoneWrapper from './components/SmartphoneWrapper'
-import OpenAppShell from './components/OpenAppShell'
 import ReferencesNotes from './components/ReferencesNotes'
 import HomeScreen from './components/HomeScreen'
 import useCurrentTime from './hooks/useCurrentTime'
@@ -457,11 +456,7 @@ function App() {
     }
 
     if (phoneState === 'app_references') {
-      return (
-        <OpenAppShell key="app_references" title="Fontes" onBack={() => setPhoneState('home')}>
-          <ReferencesNotes />
-        </OpenAppShell>
-      )
+      return <ReferencesNotes key="app_references" setPhoneState={setPhoneState} />
     }
 
     return <HomeScreen key="home_fallback" onOpenApp={openApp} />
