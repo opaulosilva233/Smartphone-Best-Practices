@@ -473,7 +473,7 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-black flex flex-col lg:flex-row">
-      <div className="hidden lg:flex lg:w-1/2 h-screen flex-col justify-between p-10 lg:p-16 xl:p-24 bg-black relative overflow-hidden z-10">
+      <div className="hidden lg:flex lg:w-1/2 h-screen flex-col justify-between p-6 lg:p-8 2xl:p-16 bg-black relative overflow-hidden z-10">
         <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-teal-900/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
         <ContextPanel phoneState={phoneState} activeApp={activeApp} />

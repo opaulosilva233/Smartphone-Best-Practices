@@ -125,7 +125,7 @@ function ContextPanel({ phoneState, activeApp }) {
 
   return (
     <>
-      <header className="relative z-10 flex flex-col shrink-0">
+      <header className="relative z-10 flex flex-col shrink-0 min-h-min">
         <div className="flex items-center gap-3 text-teal-400">
           <GraduationCap size={28} />
         </div>
@@ -139,30 +139,32 @@ function ContextPanel({ phoneState, activeApp }) {
           className="flex flex-col justify-center my-auto z-10 relative max-w-2xl"
           {...contentAnimation}
         >
-          <h1 className="text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-600 tracking-tighter mb-12">
-            {content.title}
-          </h1>
-
           <div>
-            {content.points.map((point) => (
-              <div key={`${content.title}-${point.highlight}`} className="flex items-start gap-5 mb-8 group">
-                <div className="w-1 h-full min-h-[24px] bg-teal-500 rounded-full mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                <p className="text-xl lg:text-2xl text-zinc-300 font-light leading-relaxed">
-                  <span className="font-semibold text-white">{point.highlight}</span>
-                  {point.text}
-                </p>
-              </div>
-            ))}
-          </div>
+            <h1 className="text-3xl lg:text-4xl 2xl:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-600 tracking-tighter mb-4 2xl:mb-10">
+              {content.title}
+            </h1>
 
-          <div className="mt-8 inline-flex items-center gap-3 px-4 py-2 rounded-full border border-teal-500/20 bg-teal-500/5 backdrop-blur-md w-fit">
-            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-            <span className="text-teal-300 text-xs font-bold tracking-widest uppercase">{content.focus}</span>
+            <div>
+              {content.points.map((point) => (
+                <div key={`${content.title}-${point.highlight}`} className="flex items-start gap-3 2xl:gap-5 mb-4 2xl:mb-8 group">
+                  <div className="w-1 h-full min-h-[24px] bg-teal-500 rounded-full mt-1.5 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                  <p className="text-base lg:text-lg 2xl:text-2xl text-zinc-300 font-light leading-snug 2xl:leading-relaxed">
+                    <span className="font-semibold text-white">{point.highlight}</span>
+                    {point.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-2 2xl:mt-8 inline-flex items-center gap-3 px-3 2xl:px-4 py-1.5 2xl:py-2 rounded-full border border-teal-500/20 bg-teal-500/5 backdrop-blur-md w-fit">
+              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+              <span className="text-teal-300 text-xs font-bold tracking-widest uppercase">{content.focus}</span>
+            </div>
           </div>
         </motion.main>
       </AnimatePresence>
 
-      <footer className="relative z-10 shrink-0 pt-6 mt-8">
+      <footer className="relative z-10 shrink-0 min-h-min pt-6 mt-8">
         <p className="text-zinc-600 text-[10px] tracking-widest uppercase font-medium">Desenvolvido por Paulo Silva & Francisco Rebelo</p>
       </footer>
     </>
