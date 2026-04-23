@@ -1,22 +1,28 @@
-# Fase de desenvolvimento
-FROM node:18-alpine AS dev
+# Base comum para reduzir duplicação
+FROM node:20-alpine AS base
 
 WORKDIR /app
-
-# Instalar dependências do sistema
-RUN apk add --no-cache git
-
-# Copiar package.json e package-lock.json
 COPY package*.json ./
-
-# Instalar dependências npm
 RUN npm install
 
-# Copiar todo o código-fonte
+# Fase de desenvolvimento (usada pelo docker-compose)
+FROM base AS dev
+
 COPY . .
-
-# Expor porta do Vite
 EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
-# Comando padrão para desenvolvimento com hot-reload
-CMD ["npm", "run", "dev"]
+# Fase de build para produção
+FROM base AS build
+
+COPY . .
+RUN npm run build
+
+# Imagem final de produção para servir os ficheiros estáticos
+FROM nginx:1.27-alpine AS production
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
