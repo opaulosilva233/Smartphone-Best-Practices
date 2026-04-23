@@ -407,6 +407,15 @@ function App() {
   const [depolarizacaoAtiva, setDepolarizacaoAtiva] = useState(false)
   const { currentTime, currentDate } = useCurrentTime()
 
+  const activeAppByPhoneState = {
+    app_privacy: 'social',
+    app_bias: 'video',
+    app_impact: 'chat',
+    app_sustainability: 'definicoes',
+  }
+
+  const activeApp = activeAppByPhoneState[phoneState] ?? 'home'
+
   const openApp = (appState) => {
     setPhoneState(appState)
   }
@@ -463,11 +472,12 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-full bg-black flex flex-col lg:flex-row overflow-hidden">
-      {/* Painel Esquerdo - Contexto */}
-      <section className="hidden lg:flex lg:w-1/2 lg:h-screen flex-col justify-center py-10 px-4 sm:px-6 md:px-8 lg:px-8 xl:px-10 overflow-y-auto border-b border-zinc-800/60 lg:border-b-0 lg:border-r lg:border-zinc-800/60">
-        <ContextPanel phoneState={phoneState} algoritmoResetAtivo={algoritmoResetAtivo} depolarizacaoAtiva={depolarizacaoAtiva} />
-      </section>
+    <div className="min-h-screen w-full bg-black flex flex-col lg:flex-row">
+      <div className="hidden lg:flex lg:w-1/2 h-screen flex-col justify-between p-10 lg:p-16 xl:p-24 bg-black relative overflow-hidden z-10">
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-teal-900/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+        <ContextPanel phoneState={phoneState} activeApp={activeApp} />
+      </div>
 
       {/* Painel Direito - Smartphone */}
       <section className="w-full lg:w-1/2 h-screen flex items-center justify-center relative bg-zinc-900/30 overflow-hidden ">
