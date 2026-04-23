@@ -1,11 +1,107 @@
 import { motion } from 'framer-motion'
-import { Briefcase, Camera, ChevronLeft, CheckCheck, Heart, Mic, Search, Smile, Users } from 'lucide-react'
+import {
+  AlertTriangle,
+  BookOpen,
+  Briefcase,
+  Camera,
+  ChevronLeft,
+  GraduationCap,
+  Heart,
+  Mic,
+  Search,
+  Smile,
+  Users,
+} from 'lucide-react'
 import { useState } from 'react'
 
 const spring = {
   type: 'spring',
   stiffness: 240,
   damping: 24,
+}
+
+const chatCatalog = {
+  equipa: {
+    id: 'equipa',
+    avatarClassName: 'bg-teal-700',
+    icon: Briefcase,
+    title: 'Equipa de Projeto',
+    subtitle: 'É urgente. 🚨',
+    time: '22:31',
+    unreadCount: 2,
+  },
+  mae: {
+    id: 'mae',
+    avatarClassName: 'bg-pink-700',
+    icon: Heart,
+    title: 'Mãe',
+    subtitle: 'Faz uma pausa dos ecrãs...',
+    time: 'Ontem',
+  },
+  amigos: {
+    id: 'amigos',
+    avatarClassName: 'bg-orange-700',
+    icon: Users,
+    title: 'Amigos (Fim de semana)',
+    subtitle: 'Vê se não ficas agarrado ao tele...',
+    time: 'Segunda',
+  },
+  prof: {
+    id: 'prof',
+    avatarClassName: 'bg-purple-700',
+    icon: GraduationCap,
+    title: 'Prof. Seminário',
+    subtitle: 'Sobre a avaliação da Fase 3...',
+    time: '14:20',
+  },
+  scam: {
+    id: 'scam',
+    avatarClassName: 'bg-zinc-700',
+    icon: AlertTriangle,
+    title: '+351 912 345 678',
+    subtitle: 'Parabéns! Foi selecionado...',
+    time: '09:00',
+  },
+  istec: {
+    id: 'istec',
+    avatarClassName: 'bg-blue-700',
+    icon: BookOpen,
+    title: 'Grupo ISTEC',
+    subtitle: 'Alguém tem apontamentos?',
+    time: '08:45',
+  },
+}
+
+const chatList = [chatCatalog.equipa, chatCatalog.mae, chatCatalog.amigos, chatCatalog.prof, chatCatalog.scam, chatCatalog.istec]
+
+const MessageBubble = ({ side = 'received', time, children, className = '', animate = false }) => {
+  const bubbleClassName = side === 'sent'
+    ? 'bg-[#005C4B] text-zinc-100 self-end rounded-tr-none'
+    : 'bg-[#202C33] text-zinc-100 self-start rounded-tl-none'
+
+  const bubble = (
+    <div className={`${bubbleClassName} p-3 rounded-2xl max-w-[85%] relative shadow-sm ${className}`}>
+      <p className="text-sm">{children}</p>
+      <span className={`text-[10px] text-zinc-400 float-right mt-2 ml-3 ${side === 'sent' ? 'flex items-center justify-end gap-1 float-none' : ''}`}>
+        {time}
+      </span>
+    </div>
+  )
+
+  if (!animate) {
+    return bubble
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: side === 'sent' ? 16 : -16, y: 6 }}
+      animate={{ opacity: 1, x: 0, y: 0 }}
+      transition={spring}
+      className={side === 'sent' ? 'self-end' : 'self-start'}
+    >
+      {bubble}
+    </motion.div>
+  )
 }
 
 const ChatListItem = ({ avatarClassName, icon: Icon, title, subtitle, time, unreadCount, onClick }) => {
@@ -39,6 +135,107 @@ const ChatListItem = ({ avatarClassName, icon: Icon, title, subtitle, time, unre
 const AppChat = ({ onBack }) => {
   const [hasReplied, setHasReplied] = useState(false)
   const [activeChat, setActiveChat] = useState(null)
+  const currentChat = activeChat ? chatCatalog[activeChat] : null
+
+  const renderChatBody = () => {
+    switch (activeChat) {
+      case 'equipa':
+        return (
+          <>
+            <MessageBubble side="sent" time="18:00">Pessoal, a minha parte do protótipo já está no repositório.</MessageBubble>
+            <MessageBubble side="received" time="18:15">Boa! Vou dar uma vista de olhos depois do jantar.</MessageBubble>
+            <MessageBubble side="sent" time="18:20">Perfeito. Falamos amanhã no horário normal.</MessageBubble>
+            <MessageBubble side="received" time="22:30">Pessoal, desculpem a hora (22h30). Precisava que revissem aquele relatório de viés tecnológico para amanhã de manhã. Alguém consegue?</MessageBubble>
+            <MessageBubble side="received" time="22:31">É urgente. 🚨</MessageBubble>
+
+            {hasReplied && (
+              <>
+                <MessageBubble side="sent" time="22:35" animate className="mt-4">
+                  Modo Foco Automático: A sua mensagem será lida no próximo dia útil. Proteja o seu tempo de descanso. 🛑
+                </MessageBubble>
+
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={spring}
+                  className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-900/20 p-4 backdrop-blur-sm self-end max-w-[90%]"
+                >
+                  <div className="flex items-center gap-2 text-emerald-100">
+                    <Briefcase size={18} strokeWidth={2} aria-hidden="true" />
+                    <h2 className="text-sm font-semibold">Impacto Profissional &amp; Desconexão</h2>
+                  </div>
+
+                  <div className="mt-3 space-y-3 text-sm leading-6 text-zinc-200/95">
+                    <p>
+                      O smartphone esbateu a fronteira entre o escritório e a casa. O WhatsApp tornou-se uma nova esfera pública de proximidade que gera hiperconectividade.
+                    </p>
+                    <p>
+                      Direito à Desconexão: Não normalize a urgência fora do horário laboral. A ausência de limites gera ansiedade (FOMO) e afeta os laços sociais físicos (Phubbing).
+                    </p>
+                  </div>
+                </motion.section>
+              </>
+            )}
+          </>
+        )
+      case 'mae':
+        return (
+          <>
+            <MessageBubble side="received" time="Ontem 10:00">Filho, não te esqueças de ligar à avó hoje.</MessageBubble>
+            <MessageBubble side="sent" time="Ontem 10:15">Já liguei mãe! Tudo tranquilo.</MessageBubble>
+            <MessageBubble side="received" time="Ontem 18:30">Ainda bem. E como está a correr esse trabalho da faculdade?</MessageBubble>
+            <MessageBubble side="sent" time="Ontem 19:00">Muito puxado, estou o dia todo agarrado ao ecrã a programar...</MessageBubble>
+            <MessageBubble side="received" time="Ontem">Vens jantar amanhã? E por favor, faz uma pausa dos ecrãs, pareces um zombie ultimamente. 🧟‍♂️</MessageBubble>
+          </>
+        )
+      case 'amigos':
+        return (
+          <>
+            <MessageBubble side="received" time="Segunda 10:00">Malta, jantarada esta sexta?</MessageBubble>
+            <MessageBubble side="sent" time="Segunda 10:05">Siga! Onde?</MessageBubble>
+            <MessageBubble side="received" time="Segunda 10:10">Pode ser cá em casa. Mandamos vir umas pizzas.</MessageBubble>
+            <MessageBubble side="received" time="Segunda">O João leva as bebidas. Tu trazes o quê? E vê se não ficas agarrado ao telemóvel o jantar todo como da última vez! 📵</MessageBubble>
+
+            <div className="mt-2 rounded-2xl bg-zinc-800 p-3 text-sm text-zinc-200 max-w-[90%] self-start border border-zinc-700/70">
+              Easter Egg Ético: O "Phubbing" (Phone + Snubbing) é o ato de ignorar os seus companheiros físicos em favor do ecrã, desgastando os laços sociais.
+            </div>
+          </>
+        )
+      case 'prof':
+        return (
+          <>
+            <MessageBubble side="sent" time="10:00">Bom dia Professor, enviámos o link para a simulação do smartphone atualizada.</MessageBubble>
+            <MessageBubble side="received" time="11:30">Obrigado. Vou analisar a vossa interface durante a tarde.</MessageBubble>
+            <MessageBubble side="sent" time="11:35">Ficamos a aguardar feedback.</MessageBubble>
+            <MessageBubble side="received" time="14:19">Paulo e Francisco, estive a ver a vossa simulação de smartphone para a Fase 3...</MessageBubble>
+            <MessageBubble side="received" time="14:20">Tem um bug gravíssimo... Brincadeira! Está excelente. Estão aprovados. 🏆</MessageBubble>
+          </>
+        )
+      case 'scam':
+        return (
+          <>
+            <MessageBubble side="received" time="08:50">Aviso: A sua encomenda CTT #84729 está retida na alfândega.</MessageBubble>
+            <MessageBubble side="received" time="08:55">Para libertar a encomenda, pague a taxa de 2.50€ aqui: http://fake-ctt-pay.com</MessageBubble>
+            <MessageBubble side="received" time="09:00">Parabéns! O seu número foi selecionado para ganhar um iPhone 16 Pro Max. Clique aqui para reclamar o prémio: http://phishing-scam-istec.com</MessageBubble>
+
+            <div className="mt-2 rounded-2xl bg-red-950/50 p-3 text-sm text-red-200 max-w-[90%] self-start border border-red-500/30">
+              Alerta de Privacidade: Phishing! Nunca clique em links suspeitos. A recolha excessiva de dados começa frequentemente com falsas promessas.
+            </div>
+          </>
+        )
+      case 'istec':
+        return (
+          <>
+            <MessageBubble side="received" time="08:30">Pessoal, a aula hoje é na sala 4 ou 5?</MessageBubble>
+            <MessageBubble side="sent" time="08:32">Sala 5. O prof já lá está.</MessageBubble>
+            <MessageBubble side="received" time="08:35">Obrigado! Estou a chegar.</MessageBubble>
+            <MessageBubble side="received" time="08:45">Alguém tem os apontamentos de Ética e Convergência da aula passada?</MessageBubble>
+          </>
+        )
+      default:
+        return null
+    }
+  }
 
   return (
     <motion.div
@@ -70,31 +267,18 @@ const AppChat = ({ onBack }) => {
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            <ChatListItem
-              avatarClassName="bg-teal-700"
-              icon={Briefcase}
-              title="Equipa de Projeto"
-              subtitle="É urgente. 🚨"
-              time="22:31"
-              unreadCount={2}
-              onClick={() => setActiveChat('equipa')}
-            />
-
-            <ChatListItem
-              avatarClassName="bg-pink-700"
-              icon={Heart}
-              title="Mãe"
-              subtitle="Vens jantar amanhã?"
-              time="Ontem"
-            />
-
-            <ChatListItem
-              avatarClassName="bg-orange-700"
-              icon={Users}
-              title="Amigos (Fim de semana)"
-              subtitle="O João leva as bebidas."
-              time="Segunda"
-            />
+            {chatList.map((chat) => (
+              <ChatListItem
+                key={chat.id}
+                avatarClassName={chat.avatarClassName}
+                icon={chat.icon}
+                title={chat.title}
+                subtitle={chat.subtitle}
+                time={chat.time}
+                unreadCount={chat.unreadCount}
+                onClick={() => setActiveChat(chat.id)}
+              />
+            ))}
           </div>
         </>
       ) : (
@@ -110,69 +294,23 @@ const AppChat = ({ onBack }) => {
             </button>
 
             <div className="flex min-w-0 flex-1 items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-zinc-600 flex items-center justify-center">
-                <Briefcase size={20} className="text-white" />
+              <div className={`w-10 h-10 rounded-full ${currentChat?.avatarClassName ?? 'bg-zinc-700'} flex items-center justify-center`}>
+                {currentChat?.icon ? <currentChat.icon size={20} className="text-white" /> : <Users size={20} className="text-white" />}
               </div>
 
               <div className="min-w-0">
-                <p className="truncate text-sm font-bold text-white">Equipa de Projeto</p>
+                <p className="truncate text-sm font-bold text-white">{currentChat?.title ?? 'Conversa'}</p>
                 <p className="text-xs font-medium text-green-500">Online</p>
               </div>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 pb-24 scrollbar-hide">
-            <div className="bg-[#202C33] text-zinc-100 p-3 rounded-2xl rounded-tl-none max-w-[85%] self-start relative shadow-sm">
-              <p className="text-sm">Pessoal, desculpem a hora (22h30). Precisava que revissem aquele relatório de viés tecnológico para amanhã de manhã. Alguém consegue?</p>
-              <span className="text-[10px] text-zinc-400 float-right mt-2 ml-3">22:30</span>
-            </div>
-
-            <div className="bg-[#202C33] text-zinc-100 p-3 rounded-2xl rounded-tl-2xl max-w-[85%] self-start relative shadow-sm">
-              <p className="text-sm">É urgente. 🚨</p>
-              <span className="text-[10px] text-zinc-400 float-right mt-2 ml-3">22:31</span>
-            </div>
-
-            {hasReplied && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0, x: 16, y: 6 }}
-                  animate={{ opacity: 1, x: 0, y: 0 }}
-                  transition={spring}
-                  className="bg-[#005C4B] text-zinc-100 p-3 rounded-2xl rounded-tr-none max-w-[85%] self-end relative shadow-sm mt-4"
-                >
-                  <p className="text-sm">Modo Foco Automático: A sua mensagem será lida no próximo dia útil. Proteja o seu tempo de descanso. 🛑</p>
-                  <div className="flex items-center justify-end gap-1 mt-2">
-                    <span className="text-[10px] text-zinc-400">22:35</span>
-                    <CheckCheck size={14} className="text-blue-400" />
-                  </div>
-                </motion.div>
-
-                <motion.section
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={spring}
-                  className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-900/20 p-4 backdrop-blur-sm self-end max-w-[90%]"
-                >
-                  <div className="flex items-center gap-2 text-emerald-100">
-                    <Briefcase size={18} strokeWidth={2} aria-hidden="true" />
-                    <h2 className="text-sm font-semibold">Impacto Profissional &amp; Desconexão</h2>
-                  </div>
-
-                  <div className="mt-3 space-y-3 text-sm leading-6 text-zinc-200/95">
-                    <p>
-                      O smartphone esbateu a fronteira entre o escritório e a casa. O WhatsApp tornou-se uma nova esfera pública de proximidade que gera hiperconectividade.
-                    </p>
-                    <p>
-                      Direito à Desconexão: Não normalize a urgência fora do horário laboral. A ausência de limites gera ansiedade (FOMO) e afeta os laços sociais físicos (Phubbing).
-                    </p>
-                  </div>
-                </motion.section>
-              </>
-            )}
+          <div className="flex-1 min-h-0 overflow-y-auto p-4 flex flex-col gap-3 pb-24 scrollbar-hide">
+            {renderChatBody()}
           </div>
 
           <div className="bg-[#202C33] p-4 pb-8 w-full shrink-0">
-            {!hasReplied ? (
+            {activeChat === 'equipa' && !hasReplied ? (
               <button
                 onClick={() => setHasReplied(true)}
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-all"
