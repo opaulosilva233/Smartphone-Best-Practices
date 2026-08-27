@@ -3,6 +3,7 @@ import {
   BatteryCharging,
   BellOff,
   Clock,
+  ExternalLink,
   EyeOff,
   FilterX,
   GraduationCap,
@@ -200,8 +201,24 @@ function ContextPanel({ phoneState, activeApp }) {
         </motion.main>
       </AnimatePresence>
 
-      <footer className="relative z-10 shrink-0 min-h-min pt-6 mt-8">
-        <p className="text-zinc-600 text-[10px] tracking-widest uppercase font-medium">Desenvolvido por Paulo Silva & Francisco Rebelo</p>
+      <footer className="relative z-10 shrink-0 min-h-min pt-6 mt-6 border-t border-zinc-800/80">
+        <div className="flex flex-wrap items-center gap-2.5 text-xs text-zinc-400">
+          <span className="tracking-wider uppercase font-semibold text-zinc-400 text-[11px]">
+            Desenvolvido por
+          </span>
+          <a
+            href="https://paulosilvadev.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 hover:text-teal-300 font-semibold border border-teal-500/30 hover:border-teal-400/60 shadow-[0_0_15px_rgba(20,184,166,0.2)] hover:shadow-[0_0_20px_rgba(20,184,166,0.35)] transition-all transform hover:-translate-y-0.5 group"
+            title="Visitar website de Paulo Silva"
+          >
+            <span>Paulo Silva</span>
+            <ExternalLink size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+          <span className="text-zinc-500 font-medium">&amp;</span>
+          <span className="text-zinc-300 font-medium">Francisco Rebelo</span>
+        </div>
       </footer>
     </>
   )
